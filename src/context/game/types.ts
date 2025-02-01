@@ -1,8 +1,8 @@
-import { GridSize } from '../../types/game';
+import { GridSize, PlayerCount } from '../../types/game';
 
 export type TGameContext = {
-	playerCount: 2 | 3 | 4;
-	setPlayerCount: React.Dispatch<React.SetStateAction<2 | 3 | 4>>;
+	playerCount: PlayerCount;
+	setPlayerCount: React.Dispatch<React.SetStateAction<PlayerCount>>;
 	gridSize: GridSize;
 	setGridSize: React.Dispatch<React.SetStateAction<GridSize>>;
 };
