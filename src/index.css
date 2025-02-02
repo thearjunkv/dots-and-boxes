@@ -23,6 +23,8 @@
 
 	--transition-duration: 140ms;
 	--transition-timing-function: ease-in-out;
+
+	--game-grid-box-size: 50px;
 }
 
 *,
@@ -35,6 +37,7 @@
 
 *:focus {
 	outline: 3px solid var(--blue);
+	z-index: 500;
 }
 
 body,

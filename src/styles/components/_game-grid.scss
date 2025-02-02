@@ -1,0 +1,22 @@
+.game-grid {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	& > div {
+		display: flex;
+	}
+
+	.game-grid__dot {
+		width: 6px;
+		height: 6px;
+		background-color: transparent;
+	}
+
+	.game-grid__box {
+		width: var(--game-grid-box-size);
+		height: var(--game-grid-box-size);
+		background-color: var(--neutral-800);
+	}
+}

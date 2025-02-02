@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router';
-import Layout from './components/Layout';
+import AppLayout from './components/AppLayout';
 import Home from './pages/Home';
 import Game from './pages/Game';
 import './styles/main.scss';
@@ -7,7 +7,7 @@ import './styles/main.scss';
 function App() {
 	return (
 		<Routes>
-			<Route element={<Layout />}>
+			<Route element={<AppLayout />}>
 				<Route
 					index
 					element={<Home />}
