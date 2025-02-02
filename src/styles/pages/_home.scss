@@ -1,0 +1,88 @@
+.home {
+	width: 100%;
+	padding: 1em 2em;
+	color: var(--neutral-300);
+
+	&__title {
+		font-size: 1.6rem;
+		color: var(--neutral-200);
+		text-align: center;
+	}
+
+	&__input-wrapper {
+		margin: 0.6em 0;
+
+		& > label,
+		& > span {
+			font-size: 0.9rem;
+		}
+	}
+
+	& select {
+		display: block;
+		color: inherit;
+
+		width: 100%;
+		margin-top: 0.2em;
+		padding: 0.4em 0.6em;
+		background-color: var(--neutral-1000);
+		border: none;
+		border-radius: 4px;
+
+		cursor: pointer;
+	}
+
+	&__grid-size-options-wrapper {
+		margin-top: 0.2em;
+		display: flex;
+		justify-content: space-between;
+		gap: 0.4em;
+
+		& button {
+			// margin-right: 0.2em;
+			width: 100%;
+			padding: 0.4em 1.6em;
+			text-align: center;
+			background-color: var(--neutral-1000);
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: background-color var(--transition-duration) var(--transition-timing-function);
+		}
+
+		& button.selected {
+			background-color: var(--neutral-700);
+		}
+	}
+
+	&__footer button {
+		margin-top: 0.8em;
+		padding: 0.4em;
+		width: 100%;
+		font-size: 1.05rem;
+		background-color: var(--green);
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+
+		transition: background-color var(--transition-duration) var(--transition-timing-function);
+
+		&:hover {
+			background-color: var(--green-dark);
+		}
+	}
+
+	@media screen and (max-width: 425px) {
+		&__title {
+			font-size: 1.4rem;
+		}
+
+		&__input-wrapper {
+			margin: 1em 0;
+		}
+
+		&__grid-size-options-wrapper {
+			flex-direction: column;
+		}
+	}
+}

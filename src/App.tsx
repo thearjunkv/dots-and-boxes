@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Game from './pages/Game';
+import './styles/main.scss';
 
 function App() {
 	return (

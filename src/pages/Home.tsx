@@ -1,16 +1,23 @@
 import { useNavigate } from 'react-router';
 import { gameConfig } from '../data/gameConfig';
 import { useGameContext } from '../hooks/useGameContext';
-import { isValidGridSize, isValidPlayerCount } from '../types/guards';
+import { isValidPlayerCount } from '../types/guards';
+import { useEffect } from 'react';
+import { cn } from '../utils/helpers';
 
 const Home: React.FC = () => {
 	const { gridSize, setGridSize, playerCount, setPlayerCount } = useGameContext();
 	let navigate = useNavigate();
 
+	useEffect(() => {
+		document.body.addEventListener('keydown', () => {
+			console.log(document.activeElement);
+		});
+	}, []);
 	return (
-		<div>
-			<h1>Dots and Boxes</h1>
-			<div>
+		<div className='home'>
+			<h1 className='home__title'>Dots and Boxes</h1>
+			<div className='home__input-wrapper'>
 				<label htmlFor='player-count'>No of players</label>
 				<select
 					id='player-count'
@@ -34,31 +41,22 @@ const Home: React.FC = () => {
 					))}
 				</select>
 			</div>
-			<div>
+			<div className='home__input-wrapper'>
 				<span>Select size</span>
-				{gameConfig.gridSizes.map(size => (
-					<div key={size}>
-						<label htmlFor={`option-${size}`}>{size}</label>
-						<input
-							type='radio'
-							value={size}
-							id={`option-${size}`}
-							name='gridSize'
-							checked={gridSize === size}
-							onChange={e => {
-								const value = e.target.value;
-								if (!isValidGridSize(value)) {
-									console.error('Invalid grid size.');
-									return null;
-								}
-								setGridSize(value);
-							}}
-						/>
-					</div>
-				))}
+				<div className='home__grid-size-options-wrapper'>
+					{gameConfig.gridSizes.map(size => (
+						<button
+							key={size}
+							className={cn(size === gridSize && 'selected')}
+							onClick={() => setGridSize(size)}
+						>
+							{size}
+						</button>
+					))}
+				</div>
 			</div>
-			<div>
-				<button onClick={() => navigate('/game')}>Play</button>
+			<div className='home__footer'>
+				<button onClick={() => navigate('/game')}>Start</button>
 			</div>
 		</div>
 	);
