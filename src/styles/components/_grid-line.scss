@@ -27,6 +27,22 @@
 		transition: transform var(--transition-duration) var(--transition-timing-function);
 	}
 
+	&.player-1::before {
+		background-color: var(--player-1-color);
+	}
+
+	&.player-2::before {
+		background-color: var(--player-2-color);
+	}
+
+	&.player-3::before {
+		background-color: var(--player-3-color);
+	}
+
+	&.player-4::before {
+		background-color: var(--player-4-color);
+	}
+
 	&--horizontal::before {
 		transform: scaleX(0%);
 	}

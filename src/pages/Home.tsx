@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router';
 import { gameConfig } from '../data/gameConfig';
-import { useGameContext } from '../hooks/useGameContext';
 import { isValidPlayerCount } from '../types/guards';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '../utils/helpers';
+import { GridSize, PlayerCount } from '../types/game';
 
 const Home: React.FC = () => {
-	const { gridSize, setGridSize, playerCount, setPlayerCount } = useGameContext();
-	let navigate = useNavigate();
+	const [playerCount, setPlayerCount] = useState<PlayerCount>(gameConfig.playerCounts[0]);
+	const [gridSize, setGridSize] = useState<GridSize>(gameConfig.gridSizes[0]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		document.body.addEventListener('keydown', () => {
@@ -56,7 +57,7 @@ const Home: React.FC = () => {
 				</div>
 			</div>
 			<div className='home__footer'>
-				<button onClick={() => navigate('/game')}>Start</button>
+				<button onClick={() => navigate('/game', { state: { playerCount, gridSize } })}>Start</button>
 			</div>
 		</div>
 	);

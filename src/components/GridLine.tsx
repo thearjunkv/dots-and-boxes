@@ -3,11 +3,15 @@ import { cn } from '../utils/helpers';
 const GridLine: React.FC<{
 	alignment: 'horizontal' | 'vertical';
 	handleLineClick: () => void;
-	isSelected: boolean;
-}> = ({ alignment, handleLineClick, isSelected }) => {
+	selectedBy: number | undefined;
+}> = ({ alignment, handleLineClick, selectedBy }) => {
 	return (
 		<div
-			className={cn('grid-line', `grid-line--${alignment}`, isSelected && 'selected')}
+			className={cn(
+				'grid-line',
+				`grid-line--${alignment}`,
+				selectedBy !== undefined && `selected player-${selectedBy}`
+			)}
 			onClick={handleLineClick}
 			tabIndex={0}
 			onKeyDown={e => {

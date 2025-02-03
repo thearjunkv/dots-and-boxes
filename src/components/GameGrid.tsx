@@ -3,11 +3,16 @@ import GridLine from './GridLine';
 type GameGridProps = {
 	gridRowCount: number;
 	gridColCount: number;
-	selectedGridLines: Set<string>;
+	selectedGridLineToPlayerMap: Map<string, number>;
 	handleGridLineClick: (lineId: string) => void;
 };
 
-const GameGrid: React.FC<GameGridProps> = ({ gridColCount, gridRowCount, selectedGridLines, handleGridLineClick }) => {
+const GameGrid: React.FC<GameGridProps> = ({
+	gridColCount,
+	gridRowCount,
+	selectedGridLineToPlayerMap,
+	handleGridLineClick
+}) => {
 	return (
 		<div className='game-grid'>
 			{Array.from({ length: gridRowCount * 2 + 1 }, (_, gridRowIndex) => {
@@ -27,7 +32,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gridColCount, gridRowCount, selecte
 										alignment='horizontal'
 										key={`hori-line-${gridColIndex}`}
 										handleLineClick={() => handleGridLineClick(`${gridRowIndex}-${gridColIndex}`)}
-										isSelected={selectedGridLines.has(`${gridRowIndex}-${gridColIndex}`)}
+										selectedBy={selectedGridLineToPlayerMap.get(`${gridRowIndex}-${gridColIndex}`)}
 									/>
 								);
 							})}
@@ -42,7 +47,7 @@ const GameGrid: React.FC<GameGridProps> = ({ gridColCount, gridRowCount, selecte
 										alignment='vertical'
 										key={`vert-line-${gridColIndex}`}
 										handleLineClick={() => handleGridLineClick(`${gridRowIndex}-${gridColIndex}`)}
-										isSelected={selectedGridLines.has(`${gridRowIndex}-${gridColIndex}`)}
+										selectedBy={selectedGridLineToPlayerMap.get(`${gridRowIndex}-${gridColIndex}`)}
 									/>
 								);
 
