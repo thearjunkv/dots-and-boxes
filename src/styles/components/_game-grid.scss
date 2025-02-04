@@ -18,5 +18,28 @@
 		width: var(--game-grid-box-size);
 		height: var(--game-grid-box-size);
 		background-color: var(--neutral-800);
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+		clip-path: circle(0% at 50% 50%);
+		transition: clip-path var(--transition-duration) var(--transition-timing-function);
+
+		&--selected {
+			clip-path: circle(100%);
+		}
+
+		&.player-1 {
+			background-color: var(--player-1-color);
+		}
+
+		&.player-2 {
+			background-color: var(--player-2-color);
+		}
+
+		&.player-3 {
+			background-color: var(--player-3-color);
+		}
+
+		&.player-4 {
+			background-color: var(--player-4-color);
+		}
 	}
 }

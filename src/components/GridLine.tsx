@@ -10,7 +10,7 @@ const GridLine: React.FC<{
 			className={cn(
 				'grid-line',
 				`grid-line--${alignment}`,
-				selectedBy !== undefined && `selected player-${selectedBy}`
+				selectedBy !== undefined && `grid-line--selected player-${selectedBy}`
 			)}
 			onClick={handleLineClick}
 			tabIndex={0}

@@ -1,0 +1,29 @@
+.game-board {
+	&--4x4 {
+		--game-grid-box-size: 70px;
+	}
+	&--6x6,
+	&--8x6 {
+		--game-grid-box-size: 60px;
+	}
+
+	@media screen and (max-width: 750px) {
+		&--4x4 {
+			--game-grid-box-size: 60px;
+		}
+		&--6x6,
+		&--8x6 {
+			--game-grid-box-size: 50px;
+		}
+	}
+
+	@media screen and (max-width: 425px) {
+		&--4x4 {
+			--game-grid-box-size: 50px;
+		}
+		&--6x6,
+		&--8x6 {
+			--game-grid-box-size: 40px;
+		}
+	}
+}

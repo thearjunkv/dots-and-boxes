@@ -27,6 +27,14 @@
 		transition: transform var(--transition-duration) var(--transition-timing-function);
 	}
 
+	&--horizontal::before {
+		transform: scaleX(0%);
+	}
+
+	&--vertical::before {
+		transform: scaleY(0%);
+	}
+
 	&.player-1::before {
 		background-color: var(--player-1-color);
 	}
@@ -43,19 +51,11 @@
 		background-color: var(--player-4-color);
 	}
 
-	&--horizontal::before {
-		transform: scaleX(0%);
-	}
-
-	&--vertical::before {
-		transform: scaleY(0%);
-	}
-
-	&--horizontal.selected::before {
+	&--horizontal.grid-line--selected::before {
 		transform: scaleX(100%);
 	}
 
-	&--vertical.selected::before {
+	&--vertical.grid-line--selected::before {
 		transform: scaleY(100%);
 	}
 }

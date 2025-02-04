@@ -2,9 +2,9 @@ import { GridSize, PlayerCount } from '../types/game';
 
 const playerCounts: PlayerCount[] = [2, 3, 4];
 
-const playerColors: Map<number, string> = new Map([
+const playerColorsMap: Map<number, string> = new Map([
 	[1, '#f08585'],
-	[2, '#5665e5'],
+	[2, '#3498db'],
 	[3, '#9fccad'],
 	[4, '#ffd89c']
 ]);
@@ -17,16 +17,9 @@ const gridSizeMap: { [key in GridSize]: [number, number] } = {
 	'8x6': [8, 6]
 };
 
-const gridBoxSizeMap: { [key in GridSize]: number } = {
-	'4x4': 50,
-	'6x6': 40,
-	'8x6': 40
-};
-
 export const gameConfig = {
 	playerCounts,
-	playerColors,
+	playerColorsMap,
 	gridSizes,
-	gridSizeMap,
-	gridBoxSizeMap
+	gridSizeMap
 };

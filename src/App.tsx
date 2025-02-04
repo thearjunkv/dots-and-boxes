@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 import AppLayout from './components/AppLayout';
-import Home from './pages/Home';
-import Game from './pages/Game';
+import GameSetup from './pages/GameSetup';
+import GameBoard from './pages/GameBoard';
 import './styles/main.scss';
 
 function App() {
@@ -10,11 +10,11 @@ function App() {
 			<Route element={<AppLayout />}>
 				<Route
 					index
-					element={<Home />}
+					element={<GameSetup />}
 				/>
 				<Route
-					path='game'
-					element={<Game />}
+					path='game-board'
+					element={<GameBoard />}
 				/>
 			</Route>
 		</Routes>
