@@ -1,10 +1,12 @@
 import { cn } from '../utils/helpers';
 
-const GridLine: React.FC<{
+type GridLineProps = {
 	alignment: 'horizontal' | 'vertical';
 	handleLineClick: () => void;
 	selectedBy: number | undefined;
-}> = ({ alignment, handleLineClick, selectedBy }) => {
+};
+
+const GridLine: React.FC<GridLineProps> = ({ alignment, handleLineClick, selectedBy }) => {
 	return (
 		<div
 			className={cn(

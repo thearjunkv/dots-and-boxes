@@ -1,0 +1,50 @@
+.player-card {
+	width: 100px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	text-align: center;
+
+	&__player-icon-wrapper {
+		width: 60%;
+	}
+
+	&__player-icon {
+		width: 100%;
+		filter: grayscale(100%);
+		opacity: 0.4;
+		transition: filter var(--transition-duration) var(--transition-timing-function),
+			opacity var(--transition-duration) var(--transition-timing-function);
+	}
+
+	&--active &__player-icon {
+		filter: grayscale(0%);
+		opacity: 1;
+	}
+
+	&__player-name {
+		font-size: 0.9rem;
+		color: var(--neutral-100);
+		width: 100%;
+		overflow: hidden;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.player-card {
+		width: 80px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.player-card {
+		width: 60px;
+
+		&__player-icon-wrapper {
+			width: 80%;
+		}
+	}
+}

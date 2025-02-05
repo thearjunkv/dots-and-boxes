@@ -5,6 +5,7 @@ import { gameConfig } from '../data/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../types/guards';
 import { getBoxSidesMap } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';
+import PlayerCard from '../components/PlayerCard';
 
 const GameBoard: React.FC = () => {
 	const location = useLocation();
@@ -61,16 +62,44 @@ const GameBoard: React.FC = () => {
 
 	return (
 		<div
-			className={cn('game-board', `game-board--${gridSize}`)}
+			className={cn('game', `game--${gridSize}`, 'centered-layout ')}
 			style={gridStyle}
 		>
-			<GameGrid
-				rowCount={gridRowCount}
-				colCount={gridColCount}
-				selectedLinesToPlayerMap={gameState.selectedLinesToPlayerMap}
-				capturedBoxesMap={gameState.capturedBoxesMap}
-				handleLineClick={handleLineClick}
-			/>
+			<div className='game__game-area'>
+				<div className='game__player-cards-wrapper--top'>
+					<PlayerCard
+						playerId={1}
+						isPlayerTurn={gameState.playerTurn === 1}
+					/>
+					<PlayerCard
+						playerId={2}
+						isPlayerTurn={gameState.playerTurn === 2}
+					/>
+				</div>
+				<div className='game__game-grid-wrapper'>
+					<GameGrid
+						rowCount={gridRowCount}
+						colCount={gridColCount}
+						selectedLinesToPlayerMap={gameState.selectedLinesToPlayerMap}
+						capturedBoxesMap={gameState.capturedBoxesMap}
+						handleLineClick={handleLineClick}
+					/>
+				</div>
+				<div className='game__player-cards-wrapper--bottom'>
+					{playerCount > 2 && (
+						<PlayerCard
+							playerId={3}
+							isPlayerTurn={gameState.playerTurn === 3}
+						/>
+					)}
+					{playerCount > 3 && (
+						<PlayerCard
+							playerId={4}
+							isPlayerTurn={gameState.playerTurn === 4}
+						/>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

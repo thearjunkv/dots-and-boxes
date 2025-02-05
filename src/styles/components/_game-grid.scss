@@ -8,19 +8,35 @@
 		display: flex;
 	}
 
-	.game-grid__dot {
+	&__dot {
 		width: 6px;
 		height: 6px;
 		background-color: transparent;
+		position: relative;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 100;
+
+			width: 12px;
+			height: 12px;
+			background-color: var(--neutral-600);
+			border-radius: 2px;
+		}
 	}
 
-	.game-grid__box {
+	&__box {
 		width: var(--game-grid-box-size);
 		height: var(--game-grid-box-size);
 		background-color: var(--neutral-800);
-		box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 		clip-path: circle(0% at 50% 50%);
 		transition: clip-path var(--transition-duration) var(--transition-timing-function);
+
+		box-shadow: rgba(0, 0, 0, 0.1) -12px -12px 18px -2px inset, rgba(0, 0, 0, 0.2) 12px 12px 8px -8px inset;
 
 		&--selected {
 			clip-path: circle(100%);

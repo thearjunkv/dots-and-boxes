@@ -1,25 +1,20 @@
-.app-layout {
+.centered-layout {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	padding: 1em;
-	width: 90%;
-	max-width: 800px;
+
 	background-color: var(--neutral-800);
+	color: var(--neutral-300);
 	border-radius: 4px;
 
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
 
-	@media screen and (max-width: 425px) {
+@media screen and (max-width: 480px) {
+	.centered-layout {
 		position: static;
 		transform: translate(0%, 0%);
-		width: 100%;
-		height: 100vh;
 		border-radius: 0;
-
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
 }

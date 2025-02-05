@@ -11,7 +11,7 @@ const GameSetup: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className='game-setup'>
+		<div className={cn('game-setup', 'centered-layout')}>
 			<h1 className='game-setup__title'>Dots and Boxes</h1>
 			<div className='game-setup__input-wrapper'>
 				<label htmlFor='player-count'>No of players</label>
@@ -52,7 +52,7 @@ const GameSetup: React.FC = () => {
 				</div>
 			</div>
 			<div className='game-setup__footer'>
-				<button onClick={() => navigate('/game-board', { state: { playerCount, gridSize } })}>Start</button>
+				<button onClick={() => navigate('/game', { state: { playerCount, gridSize } })}>Start</button>
 			</div>
 		</div>
 	);

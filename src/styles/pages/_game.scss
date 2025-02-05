@@ -1,0 +1,68 @@
+.game {
+	width: 90%;
+	max-width: 600px;
+
+	padding: 3em 2em;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	&__player-cards-wrapper--top,
+	&__player-cards-wrapper--bottom {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.game__game-grid-wrapper {
+		margin: 0.6em 0;
+	}
+
+	&--4x4 {
+		--game-grid-box-size: 70px;
+	}
+
+	&--6x6 {
+		--game-grid-box-size: 60px;
+	}
+
+	&--8x6 {
+		--game-grid-box-size: 60px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.game {
+		&--4x4 {
+			--game-grid-box-size: 60px;
+		}
+
+		&--6x6 {
+			--game-grid-box-size: 50px;
+		}
+
+		&--8x6 {
+			--game-grid-box-size: 50px;
+		}
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.game {
+		width: 100%;
+		height: 100vh;
+
+		&--4x4 {
+			--game-grid-box-size: 50px;
+		}
+
+		&--6x6 {
+			--game-grid-box-size: 40px;
+		}
+
+		&--8x6 {
+			--game-grid-box-size: 40px;
+		}
+	}
+}
