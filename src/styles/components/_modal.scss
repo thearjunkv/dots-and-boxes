@@ -1,0 +1,37 @@
+.modal-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: hsla(0, 0%, 0%, 0.6);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity var(--transition-duration) var(--transition-timing-function),
+		visibility var(--transition-duration) var(--transition-timing-function);
+
+	&--open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.modal {
+		transform: scale(0.8);
+		transition: transform var(--transition-duration) cubic-bezier(0.52, 0.02, 0.33, 1.69);
+	}
+
+	&--open .modal {
+		transform: scale(1);
+	}
+}
+
+.modal {
+	background-color: var(--neutral-900);
+	border-radius: 4px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}

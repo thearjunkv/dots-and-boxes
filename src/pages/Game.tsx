@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../components/GameGrid';
 import { gameConfig } from '../data/gameConfig';
@@ -7,6 +7,8 @@ import { getBoxSidesMap } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';
 import PlayerCard from '../components/PlayerCard';
 import { ChevronIcon } from '../assets/Icons';
+import Modal from '../components/Modal';
+import ScoreBoard from '../components/ScoreBoard';
 
 const GameBoard: React.FC = () => {
 	const location = useLocation();
@@ -17,6 +19,7 @@ const GameBoard: React.FC = () => {
 		capturedBoxesMap: Map<string, number>;
 		playerTurn: number;
 	}>({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
+	const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
 
 	const data = location.state || {};
 	const playerCountData = data.playerCount;
@@ -74,55 +77,83 @@ const GameBoard: React.FC = () => {
 		])
 	) as React.CSSProperties;
 
+	useEffect(() => {
+		if (gameState.capturedBoxesMap.size === gridRowCount * gridColCount) setIsGameFinished(true);
+	}, [gameState.capturedBoxesMap.size]);
+
+	const getAllPlayerScores = () =>
+		Array.from({ length: playerCount }, (_, index: number) => {
+			const playerId = index + 1;
+			return {
+				playerId,
+				playerName: `Player ${playerId}`,
+				score: [...gameState.capturedBoxesMap].filter(([_, value]) => value === playerId).length
+			};
+		});
+
+	const restartGame = () => {
+		setGameState({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
+		setIsGameFinished(false);
+	};
+
 	return (
-		<div
-			className={cn('game', `game--${gridSize}`, 'centered-layout ')}
-			style={gridStyle}
-		>
-			<button
-				className='game__btn-go-back'
-				onClick={goBack}
+		<>
+			<div
+				className={cn('game', `game--${gridSize}`, 'centered-layout ')}
+				style={gridStyle}
 			>
-				{ChevronIcon}
-			</button>
-			<div className='game__game-area'>
-				<div className='game__player-cards-wrapper--top'>
-					<PlayerCard
-						playerId={1}
-						isPlayerTurn={gameState.playerTurn === 1}
-					/>
-					<PlayerCard
-						playerId={2}
-						isPlayerTurn={gameState.playerTurn === 2}
-						flipLayout={true}
-					/>
-				</div>
-				<div className='game__game-grid-wrapper'>
-					<GameGrid
-						rowCount={gridRowCount}
-						colCount={gridColCount}
-						selectedLinesToPlayerMap={gameState.selectedLinesToPlayerMap}
-						capturedBoxesMap={gameState.capturedBoxesMap}
-						handleLineClick={handleLineClick}
-					/>
-				</div>
-				<div className='game__player-cards-wrapper--bottom'>
-					{playerCount > 2 && (
+				<button
+					className='game__btn-go-back'
+					onClick={goBack}
+				>
+					{ChevronIcon}
+				</button>
+				<div className='game__game-area'>
+					<div className='game__player-cards-wrapper--top'>
 						<PlayerCard
-							playerId={3}
-							isPlayerTurn={gameState.playerTurn === 3}
+							playerId={1}
+							isPlayerTurn={gameState.playerTurn === 1}
 						/>
-					)}
-					{playerCount > 3 && (
 						<PlayerCard
-							playerId={4}
-							isPlayerTurn={gameState.playerTurn === 4}
+							playerId={2}
+							isPlayerTurn={gameState.playerTurn === 2}
 							flipLayout={true}
 						/>
-					)}
+					</div>
+					<div className='game__game-grid-wrapper'>
+						<GameGrid
+							rowCount={gridRowCount}
+							colCount={gridColCount}
+							selectedLinesToPlayerMap={gameState.selectedLinesToPlayerMap}
+							capturedBoxesMap={gameState.capturedBoxesMap}
+							handleLineClick={handleLineClick}
+						/>
+					</div>
+					<div className='game__player-cards-wrapper--bottom'>
+						{playerCount > 2 && (
+							<PlayerCard
+								playerId={3}
+								isPlayerTurn={gameState.playerTurn === 3}
+							/>
+						)}
+						{playerCount > 3 && (
+							<PlayerCard
+								playerId={4}
+								isPlayerTurn={gameState.playerTurn === 4}
+								flipLayout={true}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
+			<Modal isOpen={isGameFinished}>
+				<ScoreBoard
+					getAllPlayerScores={getAllPlayerScores}
+					restartGame={restartGame}
+					isGameFinished={isGameFinished}
+				/>
+			</Modal>
+		</>
 	);
 };
 
