@@ -4,16 +4,23 @@ type PlayerCardProps = {
 	playerId: number;
 	playerName?: string;
 	isPlayerTurn: boolean;
+	flipLayout?: boolean;
 };
 
-const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn }) => {
+const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn, flipLayout }) => {
 	const defaultPlayerName = `Player ${playerId}`;
 	const displayPlayerName = playerName?.trim() ? playerName : defaultPlayerName;
 
 	const playerIconPath = `/assets/player-${playerId}.svg`;
 
 	return (
-		<div className={cn('player-card', isPlayerTurn && `player-card--active`)}>
+		<div
+			className={cn(
+				'player-card',
+				isPlayerTurn && `player-card--active`,
+				flipLayout && 'player-card--flip-layout'
+			)}
+		>
 			<div className='player-card__player-icon-wrapper'>
 				<img
 					src={playerIconPath}
