@@ -15,8 +15,28 @@
 		justify-content: space-between;
 	}
 
-	.game__game-grid-wrapper {
+	&__game-grid-wrapper {
 		margin: 0.6em 0;
+	}
+
+	&__btn-go-back {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		background: none;
+		border: none;
+		display: flex;
+		transform: rotate(90deg);
+		cursor: pointer;
+
+		& svg path {
+			fill: var(--neutral-400);
+			transition: fill var(--transition-duration) var(--transition-timing-function);
+		}
+
+		&:hover svg path {
+			fill: var(--neutral-100);
+		}
 	}
 
 	&--5x5 {

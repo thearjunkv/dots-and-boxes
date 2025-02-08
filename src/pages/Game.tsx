@@ -1,14 +1,16 @@
 import { useMemo, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../components/GameGrid';
 import { gameConfig } from '../data/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../types/guards';
 import { getBoxSidesMap } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';
 import PlayerCard from '../components/PlayerCard';
+import { ChevronIcon } from '../assets/Icons';
 
 const GameBoard: React.FC = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const [gameState, setGameState] = useState<{
 		selectedLinesToPlayerMap: Map<string, number>;
@@ -53,6 +55,18 @@ const GameBoard: React.FC = () => {
 		});
 	};
 
+	const goBack = () => {
+		if (
+			gameState.selectedLinesToPlayerMap.size === 0 ||
+			gameState.capturedBoxesMap.size === gridRowCount * gridColCount
+		) {
+			navigate('/');
+			return;
+		}
+		const userConfirm = window.confirm('The game will be lost. Are you sure you want to go back?');
+		if (userConfirm) navigate('/');
+	};
+
 	const gridStyle = Object.fromEntries(
 		Array.from({ length: gameConfig.playerColorsMap.size }, (_, i) => [
 			`--player-${i + 1}-color`,
@@ -65,6 +79,12 @@ const GameBoard: React.FC = () => {
 			className={cn('game', `game--${gridSize}`, 'centered-layout ')}
 			style={gridStyle}
 		>
+			<button
+				className='game__btn-go-back'
+				onClick={goBack}
+			>
+				{ChevronIcon}
+			</button>
 			<div className='game__game-area'>
 				<div className='game__player-cards-wrapper--top'>
 					<PlayerCard
