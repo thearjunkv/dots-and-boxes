@@ -44,6 +44,8 @@ describe('GridLine component', () => {
 		const user = userEvent.setup();
 		await user.click(gridLine);
 
+		expect(handleLineClick).toHaveBeenCalledOnce();
+
 		rerender(
 			<GridLine
 				alignment='vertical'

@@ -3,23 +3,23 @@ import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../components/GameGrid';
 import { gameConfig } from '../data/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../types/guards';
-import { getBoxSidesMap } from '../utils/gameUtils';
+import { getBoxSidesMap, handleGridLineClick } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';
 import PlayerCard from '../components/PlayerCard';
 import { ChevronIcon } from '../assets/Icons';
 import Modal from '../components/Modal';
 import Scoreboard from '../components/Scoreboard';
-import { PlayerScore } from '../types/game';
+import { GameState, PlayerScore } from '../types/game';
 
 const GameBoard: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [gameState, setGameState] = useState<{
-		selectedLinesToPlayerMap: Map<string, number>;
-		capturedBoxesMap: Map<string, number>;
-		playerTurn: number;
-	}>({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
+	const [gameState, setGameState] = useState<GameState>({
+		selectedLinesToPlayerMap: new Map(),
+		capturedBoxesMap: new Map(),
+		playerTurn: 1
+	});
 
 	const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
 
@@ -37,28 +37,18 @@ const GameBoard: React.FC = () => {
 
 	const handleLineClick = (lineId: string) => {
 		const { selectedLinesToPlayerMap, capturedBoxesMap, playerTurn } = gameState;
-		if (selectedLinesToPlayerMap.has(lineId)) return;
-
-		const newSelectedLinesToPlayerMap = new Map(selectedLinesToPlayerMap);
-		newSelectedLinesToPlayerMap.set(lineId, playerTurn);
-
-		let hasCapturedNewBox: boolean = false;
-		const newCapturedBoxesMap = new Map(capturedBoxesMap);
-
-		boxSidesMap.forEach((value, key) => {
-			const allSelected = value.every(side => newSelectedLinesToPlayerMap.has(side));
-			if (!allSelected) return;
-
-			if (newCapturedBoxesMap.has(key)) return;
-
-			newCapturedBoxesMap.set(key, playerTurn);
-			hasCapturedNewBox = true;
+		const result = handleGridLineClick(lineId, boxSidesMap, playerCount, {
+			selectedLinesToPlayerMap: new Map(selectedLinesToPlayerMap),
+			capturedBoxesMap: new Map(capturedBoxesMap),
+			playerTurn
 		});
 
+		if (!result) return;
+
 		setGameState({
-			selectedLinesToPlayerMap: newSelectedLinesToPlayerMap,
-			capturedBoxesMap: newCapturedBoxesMap,
-			playerTurn: hasCapturedNewBox ? playerTurn : playerTurn >= playerCount ? 1 : playerTurn + 1
+			selectedLinesToPlayerMap: result.selectedLinesToPlayerMap,
+			capturedBoxesMap: result.capturedBoxesMap,
+			playerTurn: result.playerTurn
 		});
 	};
 

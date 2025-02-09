@@ -1,4 +1,5 @@
 import { cn } from '../utils/helpers';
+import { getTestId } from '../utils/testUtils';
 import GridLine from './GridLine';
 
 type GameGridProps = {
@@ -66,6 +67,7 @@ const GameGrid: React.FC<GameGridProps> = ({
 										capturedBoxesMap.has(row_col) &&
 											`game-grid__box--selected player-${capturedBoxesMap.get(row_col)}`
 									)}
+									data-testid={getTestId('grid-box')}
 								/>
 							);
 						})}

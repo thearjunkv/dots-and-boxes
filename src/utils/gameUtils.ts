@@ -1,3 +1,5 @@
+import { GameState } from '../types/game';
+
 export const getBoxSidesMap = (rowCount: number, colCount: number) => {
 	if (rowCount <= 0 || colCount <= 0) throw new Error('Row and column counts must be greater than zero.');
 
@@ -20,3 +22,35 @@ export const getBoxSidesMap = (rowCount: number, colCount: number) => {
 
 	return boxSidesMap;
 };
+
+export const handleGridLineClick = (
+	lineId: string,
+	boxSidesMap: Map<string, string[]>,
+	playerCount: number,
+	gameState: GameState
+) => {
+	const { selectedLinesToPlayerMap, capturedBoxesMap, playerTurn } = gameState;
+	if (selectedLinesToPlayerMap.has(lineId)) return;
+
+	selectedLinesToPlayerMap.set(lineId, playerTurn);
+
+	let hasCapturedNewBox: boolean = false;
+	boxSidesMap.forEach((value, key) => {
+		const allSelected = value.every(side => selectedLinesToPlayerMap.has(side));
+
+		if (!allSelected) return;
+		if (capturedBoxesMap.has(key)) return;
+
+		capturedBoxesMap.set(key, playerTurn);
+		hasCapturedNewBox = true;
+	});
+
+	return {
+		selectedLinesToPlayerMap,
+		capturedBoxesMap,
+		playerTurn: hasCapturedNewBox ? playerTurn : playerTurn >= playerCount ? 1 : playerTurn + 1
+	};
+};
+
+export const getTotalGridLines = (rowCount: number, colCount: number) =>
+	(rowCount + 1) * colCount + (colCount + 1) * rowCount;

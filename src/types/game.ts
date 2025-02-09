@@ -7,3 +7,9 @@ export type PlayerScore = {
 	playerName: string;
 	score: number;
 };
+
+export type GameState = {
+	selectedLinesToPlayerMap: Map<string, number>;
+	capturedBoxesMap: Map<string, number>;
+	playerTurn: number;
+};
