@@ -119,10 +119,12 @@ const GameBoard: React.FC = () => {
 					<div className='game__player-cards-container--top'>
 						<PlayerCard
 							playerId={1}
+							playerName='Player 1'
 							isPlayerTurn={gameState.playerTurn === 1}
 						/>
 						<PlayerCard
 							playerId={2}
+							playerName='Player 2'
 							isPlayerTurn={gameState.playerTurn === 2}
 							flipLayout={true}
 						/>
@@ -140,12 +142,14 @@ const GameBoard: React.FC = () => {
 						{playerCount > 2 && (
 							<PlayerCard
 								playerId={3}
+								playerName='Player 3'
 								isPlayerTurn={gameState.playerTurn === 3}
 							/>
 						)}
 						{playerCount > 3 && (
 							<PlayerCard
 								playerId={4}
+								playerName='Player 4'
 								isPlayerTurn={gameState.playerTurn === 4}
 								flipLayout={true}
 							/>

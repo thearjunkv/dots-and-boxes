@@ -1,25 +1,24 @@
 import { cn } from '../utils/helpers';
+import { getTestId } from '../utils/testUtils';
 
 type PlayerCardProps = {
 	playerId: number;
-	playerName?: string;
+	playerName: string;
 	isPlayerTurn: boolean;
 	flipLayout?: boolean;
 };
 
 const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn, flipLayout }) => {
-	const defaultPlayerName = `Player ${playerId}`;
-	const displayPlayerName = playerName?.trim() ? playerName : defaultPlayerName;
-
 	const playerIconPath = `/assets/player-${playerId}.svg`;
 
 	return (
 		<div
 			className={cn(
 				'player-card',
-				isPlayerTurn && `player-card--active`,
+				isPlayerTurn && 'player-card--active',
 				flipLayout && 'player-card--flip-layout'
 			)}
+			data-testid={getTestId('player-card')}
 		>
 			<div className='player-card__player-icon-wrapper'>
 				<img
@@ -28,7 +27,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerT
 					className='player-card__player-icon'
 				/>
 			</div>
-			<div className='player-card__player-name'>{displayPlayerName}</div>
+			<div className='player-card__player-name'>{playerName}</div>
 		</div>
 	);
 };
