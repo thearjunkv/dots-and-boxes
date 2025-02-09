@@ -13,7 +13,7 @@ const GameSetup: React.FC = () => {
 	return (
 		<div className={cn('game-setup', 'centered-layout')}>
 			<h1 className='game-setup__title'>Dots and Boxes</h1>
-			<div className='game-setup__input-wrapper'>
+			<div className='game-setup__field'>
 				<label htmlFor='player-count'>No of players</label>
 				<select
 					id='player-count'
@@ -37,13 +37,16 @@ const GameSetup: React.FC = () => {
 					))}
 				</select>
 			</div>
-			<div className='game-setup__input-wrapper'>
+			<div className='game-setup__field'>
 				<span>Select size</span>
-				<div className='game-setup__grid-size-options-wrapper'>
+				<div className='game-setup__grid-size-options-container'>
 					{gameConfig.gridSizes.map(size => (
 						<button
 							key={size}
-							className={cn(size === gridSize && 'selected')}
+							className={cn(
+								'btn--tertiary game-setup__btn-grid-size',
+								size === gridSize && 'game-setup__btn-grid-size--selected'
+							)}
 							onClick={() => setGridSize(size)}
 						>
 							{size}

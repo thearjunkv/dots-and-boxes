@@ -2,8 +2,8 @@
 	--white: hsl(0, 0%, 100%);
 	--black: hsl(0, 0%, 0%);
 
-	--green: #00ab66;
-	--green-dark: #028f57;
+	--green: #1e8449;
+	--green-dark: #15713b;
 
 	--blue: #0071e3;
 
@@ -35,7 +35,7 @@
 
 *:focus {
 	outline: 3px solid var(--blue);
-	z-index: 500;
+	z-index: 100;
 }
 
 body,
@@ -66,10 +66,11 @@ body {
 	text-rendering: optimizeSpeed;
 	font-synthesis: none;
 
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: 'Montserrat', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	line-height: 1.5;
 	letter-spacing: 0.2px;
+	color: var(--neutral-100);
 
 	overflow: hidden;
 
