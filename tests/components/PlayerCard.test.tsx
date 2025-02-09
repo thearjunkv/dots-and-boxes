@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import PlayerCard from '../../src/components/PlayerCard';
 
 describe('PlayerCard component', () => {
-	it('should be in the document with player info', () => {
+	it('should render the playercard with provided data', () => {
 		render(
 			<PlayerCard
 				playerId={1}
@@ -10,7 +10,7 @@ describe('PlayerCard component', () => {
 				isPlayerTurn={false}
 			/>
 		);
-		const playerCard = screen.getByAltText(/player Icon/i);
+		const playerCard = screen.getByAltText(/player icon/i);
 
 		expect(playerCard).toHaveAttribute('src', '/assets/player-1.svg');
 		expect(screen.getByText('Player 1')).toBeInTheDocument();

@@ -8,7 +8,7 @@ import { cn } from '../utils/helpers';
 import PlayerCard from '../components/PlayerCard';
 import { ChevronIcon } from '../assets/Icons';
 import Modal from '../components/Modal';
-import ScoreBoard from '../components/ScoreBoard';
+import Scoreboard from '../components/Scoreboard';
 import { PlayerScore } from '../types/game';
 
 const GameBoard: React.FC = () => {
@@ -90,7 +90,7 @@ const GameBoard: React.FC = () => {
 					playerName: `Player ${playerId}`,
 					score: [...gameState.capturedBoxesMap].filter(([_, value]) => value === playerId).length
 				};
-			});
+			}).sort((a, b) => b.score - a.score);
 		if (gameState.capturedBoxesMap.size === gridRowCount * gridColCount) {
 			setPlayerScores(() => getAllPlayerScores());
 			setIsModalOpen(true);
@@ -161,7 +161,7 @@ const GameBoard: React.FC = () => {
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 			>
-				<ScoreBoard
+				<Scoreboard
 					playerScores={playerScores}
 					restartGame={restartGame}
 				/>
