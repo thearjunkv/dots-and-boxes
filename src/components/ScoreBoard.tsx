@@ -45,13 +45,13 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ getAllPlayerScores, restartGame
 
 			<div className='score-board__btn-container'>
 				<button
-					className='score-board__btn score-board__btn--restart'
+					className='btn'
 					onClick={restartGame}
 				>
 					Restart
 				</button>
 				<button
-					className='score-board__btn score-board__btn--go-back'
+					className='btn--secondary'
 					onClick={() => navigate('/')}
 				>
 					Go back

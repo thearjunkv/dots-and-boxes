@@ -61,21 +61,9 @@
 		}
 	}
 
-	&__footer button {
+	&__btn-wrapper .btn {
 		margin-top: 0.8em;
 		padding: 0.6em;
-		width: 100%;
-		font-size: 1.1rem;
-		background-color: var(--green);
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-
-		transition: background-color var(--transition-duration) var(--transition-timing-function);
-
-		&:hover {
-			background-color: var(--green-dark);
-		}
 	}
 }
 

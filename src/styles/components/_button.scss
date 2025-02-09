@@ -1,0 +1,25 @@
+.btn,
+.btn--secondary {
+	padding: 0.4em;
+	width: 100%;
+	font-size: 0.9rem;
+	letter-spacing: 0.5px;
+	color: var(--neutral-100);
+	background-color: var(--green);
+	border: 1px solid var(--green);
+	border-radius: 4px;
+	cursor: pointer;
+
+	transition: background-color var(--transition-duration) var(--transition-timing-function),
+		border-color var(--transition-duration) var(--transition-timing-function),
+		color var(--transition-duration) var(--transition-timing-function);
+
+	&:hover {
+		background-color: var(--green-dark);
+		border-color: var(--green-dark);
+	}
+}
+
+.btn--secondary {
+	background-color: transparent;
+}

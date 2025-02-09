@@ -51,8 +51,13 @@ const GameSetup: React.FC = () => {
 					))}
 				</div>
 			</div>
-			<div className='game-setup__footer'>
-				<button onClick={() => navigate('/game', { state: { playerCount, gridSize } })}>Start</button>
+			<div className='game-setup__btn-wrapper'>
+				<button
+					className='btn'
+					onClick={() => navigate('/game', { state: { playerCount, gridSize } })}
+				>
+					Start
+				</button>
 			</div>
 		</div>
 	);
