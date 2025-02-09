@@ -109,7 +109,7 @@ const GameBoard: React.FC = () => {
 					{ChevronIcon}
 				</button>
 				<div className='game__game-area'>
-					<div className='game__player-cards-wrapper--top'>
+					<div className='game__player-cards-container--top'>
 						<PlayerCard
 							playerId={1}
 							isPlayerTurn={gameState.playerTurn === 1}
@@ -129,7 +129,7 @@ const GameBoard: React.FC = () => {
 							handleLineClick={handleLineClick}
 						/>
 					</div>
-					<div className='game__player-cards-wrapper--bottom'>
+					<div className='game__player-cards-container--bottom'>
 						{playerCount > 2 && (
 							<PlayerCard
 								playerId={3}

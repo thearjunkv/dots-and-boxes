@@ -5,10 +5,11 @@
 
 	&__title {
 		font-size: 1.4rem;
+		font-weight: 600;
 	}
 
-	&__score-container {
-		margin: 1em 0;
+	&__score-card-container {
+		margin: 1.6em 0 1.2em 0;
 	}
 
 	&__score-card {
@@ -29,11 +30,21 @@
 
 	&__player-icon-wrapper {
 		width: 35px;
-		margin-right: 0.2em;
+		margin-right: 0.4em;
 
 		& img {
 			width: 100%;
 		}
+	}
+
+	&__player-name {
+		font-size: 0.85rem;
+		transform: translateY(2px);
+	}
+
+	&__player-score {
+		font-size: 0.9rem;
+		font-weight: 500;
 	}
 
 	&__btn-container {

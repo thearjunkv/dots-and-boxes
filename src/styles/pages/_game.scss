@@ -9,14 +9,14 @@
 	justify-content: center;
 	align-items: center;
 
-	&__player-cards-wrapper--top,
-	&__player-cards-wrapper--bottom {
+	&__player-cards-container--top,
+	&__player-cards-container--bottom {
 		display: flex;
 		justify-content: space-between;
 	}
 
 	&__game-grid-wrapper {
-		margin: 0.6em 0;
+		margin: 0.8em 0;
 	}
 
 	&__btn-go-back {
