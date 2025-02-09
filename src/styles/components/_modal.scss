@@ -36,4 +36,29 @@
 	background-color: var(--neutral-900);
 	border-radius: 4px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+
+	&__btn-close {
+		position: absolute;
+
+		top: 6px;
+		right: 6px;
+		background: none;
+		border: none;
+		display: flex;
+		cursor: pointer;
+
+		& svg {
+			width: 1.15rem;
+			transform: rotate(45deg);
+		}
+
+		& svg path {
+			fill: var(--neutral-400);
+			transition: fill var(--transition-duration) var(--transition-timing-function);
+		}
+
+		&:hover svg path {
+			fill: var(--neutral-100);
+		}
+	}
 }

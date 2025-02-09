@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-
 type Score = {
 	playerId: number;
 	playerName: string;
@@ -8,25 +5,17 @@ type Score = {
 };
 
 type ScoreBoardProps = {
-	getAllPlayerScores: () => Score[];
+	playerScores: Score[];
 	restartGame: () => void;
-	isGameFinished: boolean;
 };
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ getAllPlayerScores, restartGame, isGameFinished }) => {
-	const [scores, setScores] = useState<Score[]>([]);
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (isGameFinished) setScores(() => getAllPlayerScores());
-	}, [isGameFinished]);
-
+const ScoreBoard: React.FC<ScoreBoardProps> = ({ playerScores, restartGame }) => {
 	return (
 		<div className='score-board'>
 			<h1 className='score-board__title'>Scores</h1>
 
 			<div className='score-board__score-card-container'>
-				{scores
+				{playerScores
 					.sort((a, b) => b.score - a.score)
 					.map(({ playerId, playerName, score }) => (
 						<div
@@ -46,20 +35,12 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ getAllPlayerScores, restartGame
 					))}
 			</div>
 
-			<div className='score-board__btn-container'>
-				<button
-					className='btn'
-					onClick={restartGame}
-				>
-					Restart
-				</button>
-				<button
-					className='btn--tertiary'
-					onClick={() => navigate('/')}
-				>
-					Go back
-				</button>
-			</div>
+			<button
+				className='btn'
+				onClick={restartGame}
+			>
+				Restart
+			</button>
 		</div>
 	);
 };

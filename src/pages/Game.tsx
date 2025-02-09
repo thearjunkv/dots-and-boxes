@@ -9,6 +9,7 @@ import PlayerCard from '../components/PlayerCard';
 import { ChevronIcon } from '../assets/Icons';
 import Modal from '../components/Modal';
 import ScoreBoard from '../components/ScoreBoard';
+import { PlayerScore } from '../types/game';
 
 const GameBoard: React.FC = () => {
 	const location = useLocation();
@@ -19,7 +20,10 @@ const GameBoard: React.FC = () => {
 		capturedBoxesMap: Map<string, number>;
 		playerTurn: number;
 	}>({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
-	const [isGameFinished, setIsGameFinished] = useState<boolean>(false);
+
+	const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
+
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
 	const data = location.state || {};
 	const playerCountData = data.playerCount;
@@ -78,22 +82,25 @@ const GameBoard: React.FC = () => {
 	) as React.CSSProperties;
 
 	useEffect(() => {
-		if (gameState.capturedBoxesMap.size === gridRowCount * gridColCount) setIsGameFinished(true);
+		const getAllPlayerScores = () =>
+			Array.from({ length: playerCount }, (_, index: number) => {
+				const playerId = index + 1;
+				return {
+					playerId,
+					playerName: `Player ${playerId}`,
+					score: [...gameState.capturedBoxesMap].filter(([_, value]) => value === playerId).length
+				};
+			});
+		if (gameState.capturedBoxesMap.size === gridRowCount * gridColCount) {
+			setPlayerScores(() => getAllPlayerScores());
+			setIsModalOpen(true);
+		}
 	}, [gameState.capturedBoxesMap.size]);
-
-	const getAllPlayerScores = () =>
-		Array.from({ length: playerCount }, (_, index: number) => {
-			const playerId = index + 1;
-			return {
-				playerId,
-				playerName: `Player ${playerId}`,
-				score: [...gameState.capturedBoxesMap].filter(([_, value]) => value === playerId).length
-			};
-		});
 
 	const restartGame = () => {
 		setGameState({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
-		setIsGameFinished(false);
+		setPlayerScores([]);
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -146,11 +153,13 @@ const GameBoard: React.FC = () => {
 					</div>
 				</div>
 			</div>
-			<Modal isOpen={isGameFinished}>
+			<Modal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+			>
 				<ScoreBoard
-					getAllPlayerScores={getAllPlayerScores}
+					playerScores={playerScores}
 					restartGame={restartGame}
-					isGameFinished={isGameFinished}
 				/>
 			</Modal>
 		</>
