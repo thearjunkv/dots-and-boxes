@@ -9,6 +9,7 @@
 		"allowJs": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
+		"types": ["vitest/globals", "@testing-library/react"],
 
 		/* Bundler mode */
 		"moduleResolution": "node",
@@ -26,6 +27,6 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "tests"],
 	"exclude": ["node_modules"]
 }

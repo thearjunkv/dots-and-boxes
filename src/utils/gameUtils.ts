@@ -1,4 +1,6 @@
 export const getBoxSidesMap = (rowCount: number, colCount: number) => {
+	if (rowCount <= 0 || colCount <= 0) throw new Error('Row and column counts must be greater than zero.');
+
 	const boxSidesMap = new Map<string, string[]>();
 
 	Array.from({ length: rowCount }, (_, rowIndex) => {
