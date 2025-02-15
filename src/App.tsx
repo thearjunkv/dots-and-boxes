@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router';
-import GameSetup from './pages/GameSetup';
-import Game from './pages/Game';
+import SetupGame from './pages/SetupGame';
+import GameBoard from './pages/GameBoard';
 import './styles/main.scss';
 
 function App() {
@@ -8,11 +8,11 @@ function App() {
 		<Routes>
 			<Route
 				index
-				element={<GameSetup />}
+				element={<SetupGame />}
 			/>
 			<Route
-				path='game'
-				element={<Game />}
+				path='play'
+				element={<GameBoard />}
 			/>
 		</Routes>
 	);

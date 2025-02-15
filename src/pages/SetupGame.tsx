@@ -5,15 +5,15 @@ import { useState } from 'react';
 import { cn } from '../utils/helpers';
 import { GridSize, PlayerCount } from '../types/game';
 
-const GameSetup: React.FC = () => {
+const SetupGame: React.FC = () => {
 	const [playerCount, setPlayerCount] = useState<PlayerCount>(gameConfig.playerCounts[0]);
 	const [gridSize, setGridSize] = useState<GridSize>(gameConfig.gridSizes[0]);
 	const navigate = useNavigate();
 
 	return (
-		<div className={cn('game-setup', 'centered-layout')}>
-			<h1 className='game-setup__title'>Dots and Boxes</h1>
-			<div className='game-setup__field'>
+		<div className={cn('setup-game', 'centered-layout')}>
+			<h1 className='setup-game__title'>Dots and Boxes</h1>
+			<div className='setup-game__field'>
 				<label htmlFor='player-count'>No of players</label>
 				<select
 					id='player-count'
@@ -37,15 +37,15 @@ const GameSetup: React.FC = () => {
 					))}
 				</select>
 			</div>
-			<div className='game-setup__field'>
+			<div className='setup-game__field'>
 				<span>Select size</span>
-				<div className='game-setup__grid-size-options-container'>
+				<div className='setup-game__grid-size-options-container'>
 					{gameConfig.gridSizes.map(size => (
 						<button
 							key={size}
 							className={cn(
-								'btn--tertiary game-setup__btn-grid-size',
-								size === gridSize && 'game-setup__btn-grid-size--selected'
+								'btn--tertiary setup-game__btn-grid-size',
+								size === gridSize && 'setup-game__btn-grid-size--selected'
 							)}
 							onClick={() => setGridSize(size)}
 						>
@@ -54,10 +54,10 @@ const GameSetup: React.FC = () => {
 					))}
 				</div>
 			</div>
-			<div className='game-setup__btn-wrapper'>
+			<div className='setup-game__btn-wrapper'>
 				<button
 					className='btn'
-					onClick={() => navigate('/game', { state: { playerCount, gridSize } })}
+					onClick={() => navigate('/play', { state: { playerCount, gridSize } })}
 				>
 					Start
 				</button>
@@ -66,4 +66,4 @@ const GameSetup: React.FC = () => {
 	);
 };
 
-export default GameSetup;
+export default SetupGame;

@@ -30,7 +30,7 @@ const GameGrid: React.FC<GameGridProps> = ({
 									return (
 										<div
 											key={`dot-${row_col}`}
-											className='game-grid__dot'
+											className='game-grid__grid-dot'
 										/>
 									);
 								return (
@@ -63,9 +63,9 @@ const GameGrid: React.FC<GameGridProps> = ({
 								<div
 									key={`box-${row_col}`}
 									className={cn(
-										'game-grid__box',
+										'game-grid__grid-box',
 										capturedBoxesMap.has(row_col) &&
-											`game-grid__box--selected player-${capturedBoxesMap.get(row_col)}`
+											`game-grid__grid-box--selected player-${capturedBoxesMap.get(row_col)}`
 									)}
 									data-testid={getTestId('grid-box')}
 								/>

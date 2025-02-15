@@ -96,17 +96,17 @@ const GameBoard: React.FC = () => {
 	return (
 		<>
 			<div
-				className={cn('game', `game--${gridSize}`, 'centered-layout ')}
+				className={cn('game-board', `game-board--${gridSize}`, 'centered-layout ')}
 				style={gridStyle}
 			>
 				<button
-					className='game__btn-go-back'
+					className='game-board__btn-go-back'
 					onClick={goBack}
 				>
 					{ChevronIcon}
 				</button>
-				<div className='game__game-area'>
-					<div className='game__player-cards-container--top'>
+				<div className='game-board__game-area'>
+					<div className='game-board__player-cards-container--top'>
 						<PlayerCard
 							playerId={1}
 							playerName='Player 1'
@@ -119,7 +119,7 @@ const GameBoard: React.FC = () => {
 							flipLayout={true}
 						/>
 					</div>
-					<div className='game__game-grid-wrapper'>
+					<div className='game-board__game-grid-wrapper'>
 						<GameGrid
 							rowCount={gridRowCount}
 							colCount={gridColCount}
@@ -128,7 +128,7 @@ const GameBoard: React.FC = () => {
 							handleLineClick={handleLineClick}
 						/>
 					</div>
-					<div className='game__player-cards-container--bottom'>
+					<div className='game-board__player-cards-container--bottom'>
 						{playerCount > 2 && (
 							<PlayerCard
 								playerId={3}

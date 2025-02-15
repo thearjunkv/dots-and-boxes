@@ -8,7 +8,7 @@
 		display: flex;
 	}
 
-	&__dot {
+	&__grid-dot {
 		width: 6px;
 		height: 6px;
 		background-color: transparent;
@@ -29,7 +29,7 @@
 		}
 	}
 
-	&__box {
+	&__grid-box {
 		width: var(--game-grid-box-size);
 		height: var(--game-grid-box-size);
 		background-color: var(--neutral-800);
