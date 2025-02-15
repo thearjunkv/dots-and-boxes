@@ -126,6 +126,7 @@ const GameBoard: React.FC = () => {
 							selectedLinesToPlayerMap={gameState.selectedLinesToPlayerMap}
 							capturedBoxesMap={gameState.capturedBoxesMap}
 							handleLineClick={handleLineClick}
+							playerCount={playerCount}
 						/>
 					</div>
 					<div className='game-board__player-cards-container--bottom'>

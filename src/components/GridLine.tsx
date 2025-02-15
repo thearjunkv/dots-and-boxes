@@ -4,10 +4,14 @@ import { getTestId } from '../utils/testUtils';
 type GridLineProps = {
 	alignment: 'horizontal' | 'vertical';
 	handleLineClick: () => void;
-	selectedBy: number | undefined;
+	selectedBy?: number;
+	playerCount: number;
 };
 
-const GridLine: React.FC<GridLineProps> = ({ alignment, handleLineClick, selectedBy }) => {
+const GridLine: React.FC<GridLineProps> = ({ alignment, handleLineClick, selectedBy, playerCount }) => {
+	if (selectedBy !== undefined && (selectedBy < 1 || selectedBy > playerCount))
+		throw new Error(`selectedBy must be between 1 and ${playerCount}`);
+
 	return (
 		<div
 			className={cn(

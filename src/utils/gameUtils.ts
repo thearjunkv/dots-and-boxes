@@ -8,14 +8,14 @@ export const getBoxSidesMap = (rowCount: number, colCount: number) => {
 	Array.from({ length: rowCount }, (_, rowIndex) => {
 		Array.from({ length: colCount }, (_, colIndex) => {
 			const row = rowIndex * 2;
-			const col = colIndex * 2 + 1;
+			const col = colIndex;
 
 			const side1 = `${row}-${col}`;
-			const side2 = `${row + 1}-${col - 1}`;
+			const side2 = `${row + 1}-${col}`;
 			const side3 = `${row + 1}-${col + 1}`;
 			const side4 = `${row + 2}-${col}`;
 
-			const boxId = `${rowIndex * 2 + 1}-${colIndex * 2 + 1}`;
+			const boxId = `${rowIndex}-${colIndex}`;
 			boxSidesMap.set(boxId, [side1, side2, side3, side4]);
 		});
 	});
@@ -54,3 +54,7 @@ export const handleGridLineClick = (
 
 export const getTotalGridLines = (rowCount: number, colCount: number) =>
 	(rowCount + 1) * colCount + (colCount + 1) * rowCount;
+
+export const convertOddNumToIndex = (n: number) => (n - 1) / 2;
+
+export const convertEvenNumToIndex = (n: number) => n / 2;

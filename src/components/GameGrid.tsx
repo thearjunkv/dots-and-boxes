@@ -1,3 +1,4 @@
+import { convertEvenNumToIndex, convertOddNumToIndex } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';
 import { getTestId } from '../utils/testUtils';
 import GridLine from './GridLine';
@@ -8,6 +9,7 @@ type GameGridProps = {
 	selectedLinesToPlayerMap: Map<string, number>;
 	capturedBoxesMap: Map<string, number>;
 	handleLineClick: (lineId: string) => void;
+	playerCount: number;
 };
 
 const GameGrid: React.FC<GameGridProps> = ({
@@ -15,7 +17,8 @@ const GameGrid: React.FC<GameGridProps> = ({
 	colCount,
 	selectedLinesToPlayerMap,
 	capturedBoxesMap,
-	handleLineClick
+	handleLineClick,
+	playerCount
 }) => {
 	return (
 		<div className='game-grid'>
@@ -24,21 +27,23 @@ const GameGrid: React.FC<GameGridProps> = ({
 					return (
 						<div key={`row-${rowIndex}`}>
 							{Array.from({ length: colCount * 2 + 1 }, (_, colIndex) => {
-								const row_col = `${rowIndex}-${colIndex}`;
+								const horizontalLineIndex = `${rowIndex}-${convertOddNumToIndex(colIndex)}`;
+								const key = `${rowIndex}-${colIndex}`;
 
 								if (colIndex % 2 === 0)
 									return (
 										<div
-											key={`dot-${row_col}`}
+											key={`dot-${key}`}
 											className='game-grid__grid-dot'
 										/>
 									);
 								return (
 									<GridLine
 										alignment='horizontal'
-										key={`hori-line-${colIndex}`}
-										handleLineClick={() => handleLineClick(row_col)}
-										selectedBy={selectedLinesToPlayerMap.get(row_col)}
+										key={`horizontal-line-${key}`}
+										handleLineClick={() => handleLineClick(horizontalLineIndex)}
+										selectedBy={selectedLinesToPlayerMap.get(horizontalLineIndex)}
+										playerCount={playerCount}
 									/>
 								);
 							})}
@@ -47,25 +52,28 @@ const GameGrid: React.FC<GameGridProps> = ({
 				return (
 					<div key={`row-${rowIndex}`}>
 						{Array.from({ length: colCount * 2 + 1 }, (_, colIndex) => {
-							const row_col = `${rowIndex}-${colIndex}`;
+							const key = `${rowIndex}-${colIndex}`;
+							const verticalLineIndex = `${rowIndex}-${convertEvenNumToIndex(colIndex)}`;
+							const boxIndex = `${convertOddNumToIndex(rowIndex)}-${convertOddNumToIndex(colIndex)}`;
 
 							if (colIndex % 2 === 0)
 								return (
 									<GridLine
 										alignment='vertical'
-										key={`vert-line-${colIndex}`}
-										handleLineClick={() => handleLineClick(row_col)}
-										selectedBy={selectedLinesToPlayerMap.get(row_col)}
+										key={`vertical-line-${key}`}
+										handleLineClick={() => handleLineClick(verticalLineIndex)}
+										selectedBy={selectedLinesToPlayerMap.get(verticalLineIndex)}
+										playerCount={playerCount}
 									/>
 								);
 
 							return (
 								<div
-									key={`box-${row_col}`}
+									key={`box-${key}`}
 									className={cn(
 										'game-grid__grid-box',
-										capturedBoxesMap.has(row_col) &&
-											`game-grid__grid-box--selected player-${capturedBoxesMap.get(row_col)}`
+										capturedBoxesMap.has(boxIndex) &&
+											`game-grid__grid-box--captured player-${capturedBoxesMap.get(boxIndex)}`
 									)}
 									data-testid={getTestId('grid-box')}
 								/>
