@@ -24,7 +24,7 @@ describe('Scoreboard component', () => {
 		);
 
 		const playerIcons = screen.getAllByAltText(/player icon/i);
-		expect(playerIcons).toHaveLength(2);
+		expect(playerIcons).toHaveLength(20);
 
 		playerIcons.forEach((icon, index) => expect(icon).toHaveAttribute('src', `/assets/player-${index + 1}.svg`));
 
