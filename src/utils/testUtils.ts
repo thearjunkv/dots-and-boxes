@@ -3,8 +3,8 @@ export const getTestId = (testId: string) => (import.meta.env.MODE === 'test' ? 
 export const getActivePlayerCard = (playerCards: HTMLElement[]) => {
 	const activePlayerCards = playerCards.filter(card => card.classList.contains('player-card--active'));
 
-	if (activePlayerCards.length === 0) throw new Error('Player card not found');
-	if (activePlayerCards.length > 1) throw new Error('More than one player card found');
+	if (activePlayerCards.length === 0) throw new Error('Active player card not found');
+	if (activePlayerCards.length > 1) throw new Error('More than one active player card found');
 
 	return activePlayerCards[0];
 };
