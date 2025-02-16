@@ -1,10 +1,11 @@
+import { testIds } from '../constants/testIds';
 import { cn } from '../utils/helpers';
 import { getTestId } from '../utils/testUtils';
 
 type PlayerCardProps = {
 	playerId: number;
 	playerName: string;
-	isPlayerTurn: boolean;
+	isPlayerTurn?: boolean;
 	flipLayout?: boolean;
 };
 
@@ -18,7 +19,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerT
 				isPlayerTurn && 'player-card--active',
 				flipLayout && 'player-card--flip-layout'
 			)}
-			data-testid={getTestId('player-card')}
+			data-testid={getTestId(testIds.PLAYER_CARD)}
 		>
 			<div className='player-card__player-icon-wrapper'>
 				<img

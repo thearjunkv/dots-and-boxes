@@ -1,3 +1,4 @@
+import { testIds } from '../constants/testIds';
 import { cn } from '../utils/helpers';
 import { getTestId } from '../utils/testUtils';
 
@@ -24,7 +25,7 @@ const GridLine: React.FC<GridLineProps> = ({ alignment, handleLineClick, selecte
 			onKeyDown={e => {
 				if (e.key === 'Enter' || e.key === ' ') handleLineClick();
 			}}
-			data-testid={getTestId('grid-line')}
+			data-testid={getTestId(testIds.GRID_LINE)}
 		></div>
 	);
 };

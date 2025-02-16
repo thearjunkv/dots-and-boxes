@@ -78,14 +78,14 @@ const GameBoard: React.FC = () => {
 				return {
 					playerId,
 					playerName: `Player ${playerId}`,
-					score: [...gameState.capturedBoxesMap].filter(([_, value]) => value === playerId).length
+					score: [...gameState.capturedBoxesMap].filter(([, value]) => value === playerId).length
 				};
 			}).sort((a, b) => b.score - a.score);
 		if (gameState.capturedBoxesMap.size === gridRowCount * gridColCount) {
 			setPlayerScores(() => getAllPlayerScores());
 			setIsModalOpen(true);
 		}
-	}, [gameState.capturedBoxesMap.size]);
+	}, [gameState.capturedBoxesMap, gridRowCount, gridColCount, playerCount]);
 
 	const restartGame = () => {
 		setGameState({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });

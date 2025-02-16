@@ -1,3 +1,4 @@
+import { testIds } from '../constants/testIds';
 import { convertEvenNumToIndex, convertOddNumToIndex } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';
 import { getTestId } from '../utils/testUtils';
@@ -75,7 +76,7 @@ const GameGrid: React.FC<GameGridProps> = ({
 										capturedBoxesMap.has(boxIndex) &&
 											`game-grid__grid-box--captured player-${capturedBoxesMap.get(boxIndex)}`
 									)}
-									data-testid={getTestId('grid-box')}
+									data-testid={getTestId(testIds.GRID_BOX)}
 								/>
 							);
 						})}

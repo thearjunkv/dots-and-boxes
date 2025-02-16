@@ -53,7 +53,11 @@ export const handleGridLineClick = (
 };
 
 export const getTotalGridLines = (rowCount: number, colCount: number) =>
-	(rowCount + 1) * colCount + (colCount + 1) * rowCount;
+	getTotalHorizontalGridLines(rowCount, colCount) + getTotalVerticalGridLines(rowCount, colCount);
+
+export const getTotalHorizontalGridLines = (rowCount: number, colCount: number) => (rowCount + 1) * colCount;
+
+export const getTotalVerticalGridLines = (rowCount: number, colCount: number) => (colCount + 1) * rowCount;
 
 export const convertOddNumToIndex = (n: number) => (n - 1) / 2;
 

@@ -8,12 +8,12 @@ describe('Scoreboard component', () => {
 			{
 				playerId: 1,
 				playerName: 'Player 1',
-				score: 10
+				score: 20
 			},
 			{
 				playerId: 2,
 				playerName: 'Player 2',
-				score: 20
+				score: 15
 			}
 		];
 		render(
@@ -23,17 +23,15 @@ describe('Scoreboard component', () => {
 			/>
 		);
 
-		const playerIcons = screen.queryAllByAltText(/player icon/i);
+		const playerIcons = screen.getAllByAltText(/player icon/i);
 		expect(playerIcons.length).toBe(2);
 
-		playerIcons.forEach((icon, index) => {
-			expect(icon).toHaveAttribute('src', `/assets/player-${index + 1}.svg`);
-		});
+		playerIcons.forEach((icon, index) => expect(icon).toHaveAttribute('src', `/assets/player-${index + 1}.svg`));
 
 		expect(screen.getByText('Player 1')).toBeInTheDocument();
 		expect(screen.getByText('Player 2')).toBeInTheDocument();
 
-		expect(screen.getByText('10')).toBeInTheDocument();
 		expect(screen.getByText('20')).toBeInTheDocument();
+		expect(screen.getByText('15')).toBeInTheDocument();
 	});
 });
