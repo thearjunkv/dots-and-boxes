@@ -79,7 +79,7 @@ describe('GameGrid component', () => {
 		const gridBoxes = screen.getAllByTestId(testIds.GRID_BOX);
 
 		expect(gridLines.filter(line => line.classList.contains('grid-line--selected')).length).toBe(0);
-		expect(gridBoxes.filter(box => box.classList.contains('game-grid__grid-box--captured')).length).toBe(0);
+		expect(gridBoxes.filter(box => box.classList.contains('grid-box--captured')).length).toBe(0);
 	});
 
 	it('should apply styling for selected lines and captured boxes', () => {
@@ -104,7 +104,7 @@ describe('GameGrid component', () => {
 		const gridBoxes = screen.getAllByTestId(testIds.GRID_BOX);
 
 		expect(gridLines.filter(line => line.classList.contains('grid-line--selected')).length).toBe(2);
-		expect(gridBoxes.filter(box => box.classList.contains('game-grid__grid-box--captured')).length).toBe(2);
+		expect(gridBoxes.filter(box => box.classList.contains('grid-box--captured')).length).toBe(2);
 	});
 
 	it('should apply the correct player styling for the selected lines and captured boxes', () => {

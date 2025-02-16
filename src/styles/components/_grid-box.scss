@@ -1,0 +1,29 @@
+.grid-box {
+	width: var(--game-grid-box-size);
+	height: var(--game-grid-box-size);
+	background-color: var(--neutral-800);
+	clip-path: circle(0% at 50% 50%);
+	transition: clip-path var(--transition-duration) var(--transition-timing-function);
+
+	box-shadow: rgba(0, 0, 0, 0.1) -12px -12px 18px -2px inset, rgba(0, 0, 0, 0.2) 12px 12px 8px -8px inset;
+
+	&--captured {
+		clip-path: circle(100%);
+	}
+
+	&.player-1 {
+		background-color: var(--player-1-color);
+	}
+
+	&.player-2 {
+		background-color: var(--player-2-color);
+	}
+
+	&.player-3 {
+		background-color: var(--player-3-color);
+	}
+
+	&.player-4 {
+		background-color: var(--player-4-color);
+	}
+}

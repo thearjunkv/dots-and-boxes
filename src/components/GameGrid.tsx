@@ -1,7 +1,5 @@
-import { testIds } from '../constants/testIds';
 import { convertEvenNumToIndex, convertOddNumToIndex } from '../utils/gameUtils';
-import { cn } from '../utils/helpers';
-import { getTestId } from '../utils/testUtils';
+import GridBox from './GridBox';
 import GridLine from './GridLine';
 
 type GameGridProps = {
@@ -55,7 +53,7 @@ const GameGrid: React.FC<GameGridProps> = ({
 						{Array.from({ length: colCount * 2 + 1 }, (_, colIndex) => {
 							const key = `${rowIndex}-${colIndex}`;
 							const verticalLineIndex = `${rowIndex}-${convertEvenNumToIndex(colIndex)}`;
-							const boxIndex = `${convertOddNumToIndex(rowIndex)}-${convertOddNumToIndex(colIndex)}`;
+							const boxId = `${convertOddNumToIndex(rowIndex)}-${convertOddNumToIndex(colIndex)}`;
 
 							if (colIndex % 2 === 0)
 								return (
@@ -69,14 +67,10 @@ const GameGrid: React.FC<GameGridProps> = ({
 								);
 
 							return (
-								<div
+								<GridBox
 									key={`box-${key}`}
-									className={cn(
-										'game-grid__grid-box',
-										capturedBoxesMap.has(boxIndex) &&
-											`game-grid__grid-box--captured player-${capturedBoxesMap.get(boxIndex)}`
-									)}
-									data-testid={getTestId(testIds.GRID_BOX)}
+									boxId={boxId}
+									capturedBoxesMap={capturedBoxesMap}
 								/>
 							);
 						})}

@@ -10,7 +10,7 @@ export const getActivePlayerCard = (playerCards: HTMLElement[]) => {
 };
 
 export const getCapturedGridBoxes = (gridBoxes: HTMLElement[]) =>
-	gridBoxes.filter(box => box.classList.contains('game-grid__grid-box--captured'));
+	gridBoxes.filter(box => box.classList.contains('grid-box--captured'));
 
 export const getSelectedGridLines = (gridLines: HTMLElement[]) =>
 	gridLines.filter(line => line.classList.contains('grid-line--selected'));
