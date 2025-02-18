@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../components/GameGrid';
-import { gameConfig } from '../data/gameConfig';
+import { gameConfig } from '../constants/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../types/guards';
 import { getBoxSidesMap, handleGridLineClick } from '../utils/gameUtils';
 import { cn } from '../utils/helpers';

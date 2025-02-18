@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { gameConfig } from '../data/gameConfig';
+import { gameConfig } from '../constants/gameConfig';
 import { isValidPlayerCount } from '../types/guards';
 import { useState } from 'react';
 import { cn } from '../utils/helpers';
