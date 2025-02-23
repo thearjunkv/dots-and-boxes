@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import GameGrid from '../components/GameGrid';
-import { gameConfig } from '../constants/gameConfig';
-import { isValidGridSize, isValidPlayerCount } from '../types/guards';
-import { getBoxSidesMap, handleGridLineClick } from '../utils/gameUtils';
-import { cn } from '../utils/helpers';
-import PlayerCard from '../components/PlayerCard';
-import { ChevronIcon } from '../assets/Icons';
-import Modal from '../components/Modal';
-import Scoreboard from '../components/Scoreboard';
-import { GameState, PlayerScore } from '../types/game';
+import GameGrid from '../../components/GameGrid';
+import { gameConfig } from '../../constants/gameConfig';
+import { isValidGridSize, isValidPlayerCount } from '../../types/guards';
+import { getBoxSidesMap, handleGridLineClick } from '../../utils/gameUtils';
+import { cn } from '../../utils/helpers';
+import PlayerCard from '../../components/PlayerCard';
+import Modal from '../../components/Modal';
+import Scoreboard from '../../components/Scoreboard';
+import { GameState, PlayerScore } from '../../types/game';
+import PrevPageBtn from '../../components/PrevPageBtn';
 
 const GameBoard: React.FC = () => {
 	const location = useLocation();
@@ -57,11 +57,11 @@ const GameBoard: React.FC = () => {
 			gameState.selectedLinesToPlayerMap.size === 0 ||
 			gameState.capturedBoxesMap.size === gridRowCount * gridColCount
 		) {
-			navigate('/');
+			navigate('/offline', { replace: true });
 			return;
 		}
 		const userConfirm = window.confirm('The game will be lost. Are you sure you want to go back?');
-		if (userConfirm) navigate('/');
+		if (userConfirm) navigate('/offline', { replace: true });
 	};
 
 	const gridStyle = Object.fromEntries(
@@ -99,12 +99,7 @@ const GameBoard: React.FC = () => {
 				className={cn('game-board', `game-board--${gridSize}`, 'centered-layout ')}
 				style={gridStyle}
 			>
-				<button
-					className='game-board__btn-go-back'
-					onClick={goBack}
-				>
-					{ChevronIcon}
-				</button>
+				<PrevPageBtn goPrevPage={goBack} />
 				<div className='game-board__game-area'>
 					<div className='game-board__player-cards-container--top'>
 						<PlayerCard

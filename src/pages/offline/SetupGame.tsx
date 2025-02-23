@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router';
-import { gameConfig } from '../constants/gameConfig';
-import { isValidPlayerCount } from '../types/guards';
+import { gameConfig } from '../../constants/gameConfig';
+import { isValidPlayerCount } from '../../types/guards';
 import { useState } from 'react';
-import { cn } from '../utils/helpers';
-import { GridSize, PlayerCount } from '../types/game';
+import { cn } from '../../utils/helpers';
+import { GridSize, PlayerCount } from '../../types/game';
+import PrevPageBtn from '../../components/PrevPageBtn';
 
 const SetupGame: React.FC = () => {
 	const [playerCount, setPlayerCount] = useState<PlayerCount>(gameConfig.playerCounts[0]);
@@ -12,8 +13,9 @@ const SetupGame: React.FC = () => {
 
 	return (
 		<div className={cn('setup-game', 'centered-layout')}>
-			<h1 className='setup-game__title'>Dots and Boxes</h1>
-			<div className='setup-game__field'>
+			<PrevPageBtn goPrevPage={() => navigate('/', { replace: true })} />
+			<h1 className='title'>Create Game</h1>
+			<div className='input-field'>
 				<label htmlFor='player-count'>No of players</label>
 				<select
 					id='player-count'
@@ -37,15 +39,15 @@ const SetupGame: React.FC = () => {
 					))}
 				</select>
 			</div>
-			<div className='setup-game__field'>
-				<span>Select size</span>
-				<div className='setup-game__grid-size-options-container'>
+			<div className='input-field'>
+				<span className='input-field__label'>Select size</span>
+				<div className='grid-size-options-container'>
 					{gameConfig.gridSizes.map(size => (
 						<button
 							key={size}
 							className={cn(
-								'btn--tertiary setup-game__btn-grid-size',
-								size === gridSize && 'setup-game__btn-grid-size--selected'
+								'btn--tertiary btn-grid-size',
+								size === gridSize && 'btn-grid-size--selected'
 							)}
 							onClick={() => setGridSize(size)}
 						>
@@ -54,10 +56,10 @@ const SetupGame: React.FC = () => {
 					))}
 				</div>
 			</div>
-			<div className='setup-game__btn-wrapper'>
+			<div className='main-btn-wrapper'>
 				<button
 					className='btn'
-					onClick={() => navigate('/play', { state: { playerCount, gridSize } })}
+					onClick={() => navigate('/offline/play', { state: { playerCount, gridSize } })}
 				>
 					Start
 				</button>

@@ -1,0 +1,19 @@
+.btn-prev-page {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	background: none;
+	border: none;
+	display: flex;
+	transform: rotate(90deg);
+	cursor: pointer;
+
+	& svg path {
+		fill: var(--neutral-400);
+		transition: fill var(--transition-duration) var(--transition-timing-function);
+	}
+
+	&:hover svg path {
+		fill: var(--neutral-100);
+	}
+}

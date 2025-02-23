@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router';
-import GameBoard from '../../src/pages/GameBoard';
+import GameBoard from '../../src/pages/offline/GameBoard';
 import { testIds } from '../../src/constants/testIds';
 import { getTotalGridLines } from '../../src/utils/gameUtils';
 import { getActivePlayerCard, getCapturedGridBoxes, getSelectedGridLines } from '../../src/utils/testUtils';

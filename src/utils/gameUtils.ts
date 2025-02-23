@@ -62,3 +62,5 @@ export const getTotalVerticalGridLines = (rowCount: number, colCount: number) =>
 export const convertOddNumToIndex = (n: number) => (n - 1) / 2;
 
 export const convertEvenNumToIndex = (n: number) => n / 2;
+
+export const createPlayerId = () => Date.now() + '-' + Math.random().toString(36).slice(2, 11);
