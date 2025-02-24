@@ -96,7 +96,7 @@ const GameBoard: React.FC = () => {
 	return (
 		<>
 			<div
-				className={cn('game-board', `game-board--${gridSize}`, 'centered-layout ')}
+				className={cn('game-board', `game-board--${gridSize}`)}
 				style={gridStyle}
 			>
 				<PrevPageBtn goPrevPage={goBack} />

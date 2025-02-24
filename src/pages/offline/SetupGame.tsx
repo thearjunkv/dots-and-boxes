@@ -12,7 +12,7 @@ const SetupGame: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className={cn('setup-game', 'centered-layout')}>
+		<div className='setup-game'>
 			<PrevPageBtn goPrevPage={() => navigate('/', { replace: true })} />
 			<h1 className='title'>Create Game</h1>
 			<div className='input-field'>

@@ -1,5 +1,6 @@
 .btn-prev-page {
-	position: absolute;
+	position: fixed;
+	z-index: 200;
 	top: 10px;
 	left: 10px;
 	background: none;

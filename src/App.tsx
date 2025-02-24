@@ -8,6 +8,7 @@ import CreateRoom from './pages/online/CreateRoom';
 import JoinRoom from './pages/online/JoinRoom';
 
 import './styles/main.scss';
+import SocketStatus from './components/SocketStatus';
 
 function App() {
 	return (
@@ -28,16 +29,18 @@ function App() {
 			</Route>
 			<Route
 				path='online'
-				element={<SetupRoom />}
+				element={<SocketStatus />}
 			>
-				<Route
-					index
-					element={<CreateRoom />}
-				/>
-				<Route
-					path='join'
-					element={<JoinRoom />}
-				/>
+				<Route element={<SetupRoom />}>
+					<Route
+						index
+						element={<CreateRoom />}
+					/>
+					<Route
+						path='join'
+						element={<JoinRoom />}
+					/>
+				</Route>
 			</Route>
 		</Routes>
 	);

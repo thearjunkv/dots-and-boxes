@@ -1,12 +1,8 @@
 .setup-room {
-	width: 90%;
+	width: 90vw;
 	max-width: 450px;
 
-	padding: 2em;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	padding: 1em;
 
 	&__nav-links-container {
 		display: flex;
@@ -29,12 +25,5 @@
 		&.nav-link--active {
 			background-color: var(--neutral-600);
 		}
-	}
-}
-
-@media screen and (max-width: 425px) {
-	.setup-room {
-		width: 100%;
-		height: 100vh;
 	}
 }

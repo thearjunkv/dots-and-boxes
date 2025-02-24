@@ -61,7 +61,14 @@ html:focus-within {
 }
 
 body {
+	width: 100%;
 	min-height: 100vh;
+	overflow: hidden;
+	background-color: var(--neutral-800);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	text-rendering: optimizeSpeed;
 	font-synthesis: none;
@@ -72,19 +79,8 @@ body {
 	letter-spacing: 0.2px;
 	color: var(--neutral-100);
 
-	overflow: hidden;
-
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-	background-color: #8866aa;
-	background-image: radial-gradient(at 72% 93%, hsla(269, 70%, 50%, 1) 0px, transparent 50%),
-		radial-gradient(at 11% 70%, hsla(292, 60%, 45%, 1) 0px, transparent 50%),
-		radial-gradient(at 61% 27%, hsla(275, 65%, 53%, 1) 0px, transparent 50%),
-		radial-gradient(at 27% 96%, hsla(255, 60%, 51%, 1) 0px, transparent 50%),
-		radial-gradient(at 49% 40%, hsla(315, 68%, 52%, 1) 0px, transparent 50%),
-		radial-gradient(at 58% 20%, hsla(338, 60%, 49%, 1) 0px, transparent 50%),
-		radial-gradient(at 50% 60%, hsla(268, 64%, 48%, 1) 0px, transparent 50%);
 }
 
 a:not([class]) {

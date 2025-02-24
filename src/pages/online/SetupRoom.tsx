@@ -1,12 +1,11 @@
 import { NavLink, Outlet, useNavigate } from 'react-router';
-import { cn } from '../../utils/helpers';
 import PrevPageBtn from '../../components/PrevPageBtn';
 
 const SetupRoom: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className={cn('setup-room', 'centered-layout')}>
+		<div className='setup-room'>
 			<PrevPageBtn goPrevPage={() => navigate('/', { replace: true })} />
 			<h1 className='title'>Play Online</h1>
 			<div className='setup-room__nav-links-container'>

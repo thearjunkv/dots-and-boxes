@@ -3,6 +3,7 @@ import { useSocket } from '../../hooks/useSocket';
 import { createPlayerId } from '../../utils/gameUtils';
 import { useNavigate } from 'react-router';
 import { GameStateServer } from '../../types/game';
+import PopupAlert from '../../components/PopupAlert';
 
 const JoinRoom: React.FC = () => {
 	const [playerName, setPlayerName] = useState<string>('');
@@ -11,32 +12,39 @@ const JoinRoom: React.FC = () => {
 		playerName: '',
 		roomId: ''
 	});
+	const [popupAlert, setPopupAlert] = useState<{
+		show: boolean;
+		title: string;
+		body: string;
+	}>({
+		show: false,
+		title: '',
+		body: ''
+	});
 	const navigate = useNavigate();
 	const socket = useSocket();
 
-	const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		let error: string = '';
+	const validatePlayerName = (value: string) => {
+		let error = '';
 
 		if (value.trim() === '') error = 'Player name is required';
-		else if (value.length > 8) error = 'Player name cannot exceed 8 characters';
+		else if (value.length > 8) error = 'Player name should be max 8 characters.';
 
 		setErrors(p => ({ ...p, playerName: error }));
-		setPlayerName(value);
+		return { hasError: error.length > 0 };
 	};
 
-	const handleRoomIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		let error: string = '';
+	const validateRoomId = (value: string) => {
+		let error = '';
 
 		if (value.trim() === '') error = 'Room ID is required';
 
 		setErrors(p => ({ ...p, roomId: error }));
-		setRoomId(value);
+		return { hasError: error.length > 0 };
 	};
 
 	const joinRoom = () => {
-		if (errors.playerName.length > 0 || errors.roomId.length > 0) return;
+		if (validatePlayerName(playerName).hasError || validateRoomId(roomId).hasError) return;
 
 		const playerId = createPlayerId();
 		socket?.emit('room:join', { playerId, playerName, roomId });
@@ -54,6 +62,22 @@ const JoinRoom: React.FC = () => {
 		};
 	}, [navigate, socket]);
 
+	useEffect(() => {
+		if (!socket) return;
+		const handleEvent = (data: { message: string }) => {
+			let body: string;
+			const { message } = data;
+			if (message === 'ROOM_NOT_FOUND') body = 'Room not found.';
+			else body = 'Unable to join room.';
+			setPopupAlert({ show: true, title: 'Action Failed', body });
+		};
+		socket.on('error', handleEvent);
+
+		return () => {
+			socket.off('error', handleEvent);
+		};
+	}, [navigate, socket]);
+
 	return (
 		<>
 			<div className='input-field'>
@@ -62,7 +86,11 @@ const JoinRoom: React.FC = () => {
 					type='text'
 					name='playerName'
 					value={playerName}
-					onChange={handlePlayerNameChange}
+					onChange={e => {
+						const value = e.target.value;
+						validatePlayerName(value);
+						setPlayerName(value);
+					}}
 				/>
 				{errors.playerName.length > 0 && <span className='input-field__error'>{errors.playerName}</span>}
 			</div>
@@ -72,7 +100,11 @@ const JoinRoom: React.FC = () => {
 					type='text'
 					name='roomId'
 					value={roomId}
-					onChange={handleRoomIdChange}
+					onChange={e => {
+						const value = e.target.value;
+						validateRoomId(value);
+						setRoomId(value);
+					}}
 				/>
 				{errors.roomId.length > 0 && <span className='input-field__error'>{errors.roomId}</span>}
 			</div>
@@ -85,6 +117,12 @@ const JoinRoom: React.FC = () => {
 					Join Room
 				</button>
 			</div>
+			<PopupAlert
+				isOpen={popupAlert.show}
+				onClose={() => setPopupAlert(p => ({ ...p, show: false }))}
+				title={popupAlert.title}
+				body={popupAlert.body}
+			/>
 		</>
 	);
 };
