@@ -18,6 +18,13 @@
 		background-color: var(--green-dark);
 		border-color: var(--green-dark);
 	}
+
+	&:disabled {
+		background-color: var(--neutral-600);
+		border-color: var(--neutral-600);
+		color: var(--neutral-400);
+		cursor: not-allowed;
+	}
 }
 
 .btn--secondary {

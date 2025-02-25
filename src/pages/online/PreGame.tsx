@@ -14,6 +14,7 @@ const PreGame: React.FC = () => {
 	const playerId = useMemo(() => getPlayerId(), []);
 
 	const [gameStateServer, setGameStateServer] = useState<GameStateServer | null>(location.state.gameStateServer);
+	const [isStartGameDisabled, setIsStartGameDisabled] = useState<boolean>(true);
 
 	const [popupAlert, setPopupAlert] = useState<{
 		show: boolean;
@@ -41,6 +42,21 @@ const PreGame: React.FC = () => {
 		socket.emit('room:kick', { targetPlayerId });
 	};
 
+	const startGame = () => {
+		if (!socket) return;
+		socket.emit('game:start');
+	};
+
+	useEffect(() => {
+		if (!gameStateServer) {
+			setIsStartGameDisabled(true);
+			return;
+		}
+
+		if (gameStateServer.players.length < 2) setIsStartGameDisabled(true);
+		else setIsStartGameDisabled(false);
+	}, [gameStateServer]);
+
 	useEffect(() => {
 		if (!socket) return;
 
@@ -65,6 +81,9 @@ const PreGame: React.FC = () => {
 				onConfirm: () => navigate('/online', { replace: true })
 			});
 
+		const handleGameStarted = (gameStateServer: GameStateServer) =>
+			navigate('/online/play', { state: { gameStateServer } });
+
 		socket.on('connect', handleConnect);
 		socket.on('reconnect ', handleConnect);
 
@@ -72,6 +91,8 @@ const PreGame: React.FC = () => {
 		socket.on('room:refresh:preGame', updateGameState);
 
 		socket.on('room:kicked', handleKicked);
+
+		socket.on('game:started', handleGameStarted);
 
 		socket.on('room:playerDisconnect', updateGameState);
 
@@ -83,6 +104,8 @@ const PreGame: React.FC = () => {
 			socket.off('room:refresh:preGame', updateGameState);
 
 			socket.off('room:kicked', handleKicked);
+
+			socket.off('game:started', handleGameStarted);
 
 			socket.off('room:playerDisconnect', updateGameState);
 		};
@@ -144,7 +167,13 @@ const PreGame: React.FC = () => {
 
 			{gameStateServer.host === playerId && (
 				<div className='main-btn-wrapper'>
-					<button className='btn pre-game__btn-start'>Start Game</button>
+					<button
+						className='btn pre-game__btn-start'
+						onClick={startGame}
+						disabled={isStartGameDisabled}
+					>
+						Start Game
+					</button>
 				</div>
 			)}
 			<PopupAlert
