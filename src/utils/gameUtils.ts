@@ -63,4 +63,11 @@ export const convertOddNumToIndex = (n: number) => (n - 1) / 2;
 
 export const convertEvenNumToIndex = (n: number) => n / 2;
 
-export const createPlayerId = () => Date.now() + '-' + Math.random().toString(36).slice(2, 11);
+export const getPlayerId = () => {
+	let playerId = sessionStorage.getItem('playerId');
+	if (!playerId) {
+		playerId = crypto.randomUUID();
+		sessionStorage.setItem('playerId', playerId);
+	}
+	return playerId;
+};

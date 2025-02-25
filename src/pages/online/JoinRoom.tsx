@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSocket } from '../../hooks/useSocket';
-import { createPlayerId } from '../../utils/gameUtils';
+import { getPlayerId } from '../../utils/gameUtils';
 import { useNavigate } from 'react-router';
 import { GameStateServer } from '../../types/game';
 import PopupAlert from '../../components/PopupAlert';
@@ -46,14 +46,14 @@ const JoinRoom: React.FC = () => {
 	const joinRoom = () => {
 		if (validatePlayerName(playerName).hasError || validateRoomId(roomId).hasError) return;
 
-		const playerId = createPlayerId();
+		const playerId = getPlayerId();
 		socket?.emit('room:join', { playerId, playerName, roomId });
 	};
 
 	useEffect(() => {
 		if (!socket) return;
-		const handleEvent = (gameState: GameStateServer) => {
-			navigate('/online/pre-game', { state: { gameState } });
+		const handleEvent = (gameStateServer: GameStateServer) => {
+			navigate('/online/pre-game', { state: { gameStateServer } });
 		};
 		socket.on('room:join:ack', handleEvent);
 

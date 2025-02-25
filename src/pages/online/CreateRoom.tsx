@@ -3,7 +3,7 @@ import { GameStateServer, GridSize } from '../../types/game';
 import { gameConfig } from '../../constants/gameConfig';
 import { cn } from '../../utils/helpers';
 import { useSocket } from '../../hooks/useSocket';
-import { createPlayerId } from '../../utils/gameUtils';
+import { getPlayerId } from '../../utils/gameUtils';
 import { useNavigate } from 'react-router';
 import PopupAlert from '../../components/PopupAlert';
 
@@ -38,14 +38,14 @@ const CreateRoom: React.FC = () => {
 	const createRoom = () => {
 		if (validatePlayerName(playerName).hasError) return;
 
-		const playerId = createPlayerId();
+		const playerId = getPlayerId();
 		socket?.emit('room:create', { playerId, playerName, gridSize });
 	};
 
 	useEffect(() => {
 		if (!socket) return;
-		const handleEvent = (gameState: GameStateServer) => {
-			navigate('/online/pre-game', { state: { gameState } });
+		const handleEvent = (gameStateServer: GameStateServer) => {
+			navigate('/online/pre-game', { state: { gameStateServer } });
 		};
 		socket.on('room:create:ack', handleEvent);
 

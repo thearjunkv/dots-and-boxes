@@ -9,6 +9,7 @@ import JoinRoom from './pages/online/JoinRoom';
 
 import './styles/main.scss';
 import SocketStatus from './components/SocketStatus';
+import PreGame from './pages/online/PreGame';
 
 function App() {
 	return (
@@ -41,6 +42,10 @@ function App() {
 						element={<JoinRoom />}
 					/>
 				</Route>
+				<Route
+					path='pre-game'
+					element={<PreGame />}
+				/>
 			</Route>
 		</Routes>
 	);

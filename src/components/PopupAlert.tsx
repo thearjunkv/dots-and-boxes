@@ -5,22 +5,34 @@ type PopupAlertProps = {
 	onClose: () => void;
 	title: string;
 	body: string;
+	hideCloseButton?: boolean;
+	confirmBtnText?: string;
+	onConfirm?: () => void;
 };
 
-const PopupAlert: React.FC<PopupAlertProps> = ({ isOpen, onClose, title, body }) => {
+const PopupAlert: React.FC<PopupAlertProps> = ({
+	isOpen,
+	onClose,
+	title,
+	body,
+	hideCloseButton,
+	confirmBtnText,
+	onConfirm
+}) => {
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
+			hideCloseButton={hideCloseButton}
 		>
 			<div className='popup-alert'>
 				<h2>{title}</h2>
 				<p>{body}</p>
 				<button
 					className='btn'
-					onClick={onClose}
+					onClick={() => (onConfirm ? onConfirm() : onClose())}
 				>
-					OK
+					{confirmBtnText || 'OK'}
 				</button>
 			</div>
 		</Modal>

@@ -15,6 +15,7 @@ export type GameState = {
 };
 
 export type GameStateServer = {
+	roomId: string;
 	gameStarted: boolean;
 	currentMove: string;
 	gridSize: string;

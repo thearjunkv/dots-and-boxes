@@ -16,14 +16,21 @@ const SocketStatus = () => {
 		const handleConnect = () => setIsConnected(true);
 		const handleDisconnect = () => setIsConnected(false);
 
-		if (socket.connected) setIsConnected(true);
-		else setIsConnected(false);
-
 		socket.on('connect', handleConnect);
+		socket.on('connect_error', handleDisconnect);
+
+		socket.on('reconnect_error', handleDisconnect);
+		socket.on('reconnect_failed', handleDisconnect);
+
 		socket.on('disconnect', handleDisconnect);
 
 		return () => {
 			socket.off('connect', handleConnect);
+			socket.off('connect_error', handleDisconnect);
+
+			socket.off('reconnect_error', handleDisconnect);
+			socket.off('reconnect_failed', handleDisconnect);
+
 			socket.off('disconnect', handleDisconnect);
 		};
 	}, [socket]);
