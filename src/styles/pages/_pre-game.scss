@@ -32,14 +32,14 @@
 	&__btn-kick {
 		position: absolute;
 		top: 50%;
-		right: 5px;
+		right: 9px;
 		transform: translateY(-50%);
 		display: flex;
 		padding: 0.3em;
 
 		background-color: var(--red);
 		border: none;
-		border-radius: 50%;
+		border-radius: 4px;
 
 		cursor: pointer;
 		transition: background-color var(--transition-duration) var(--transition-timing-function);

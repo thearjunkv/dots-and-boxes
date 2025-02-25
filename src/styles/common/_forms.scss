@@ -16,7 +16,7 @@
 
 		font-size: 0.9rem;
 
-		background-color: var(--neutral-700);
+		background-color: var(--neutral-900);
 		border: none;
 		border-radius: 4px;
 	}
@@ -36,7 +36,8 @@
 		padding: 0.6em;
 
 		&--selected {
-			background-color: var(--neutral-500);
+			background-color: var(--neutral-700);
+			border-color: var(--neutral-700);
 		}
 	}
 

@@ -13,14 +13,14 @@
 		margin: 0.2em 0;
 		padding: 0.8em;
 
-		background-color: var(--neutral-700);
+		background-color: var(--neutral-900);
 		border-radius: 4px;
 		color: var(--white);
 		text-align: center;
 		transition: background-color var(--transition-duration) var(--transition-timing-function);
 
 		&:hover {
-			background-color: var(--neutral-600);
+			background-color: var(--neutral-700);
 		}
 	}
 }

@@ -1,16 +1,15 @@
 .player-card {
 	padding: 0.2em 0.4em;
 
-	background-color: hsla(0, 0%, 31%, 0.3);
+	background-color: var(--neutral-900);
+	color: var(--neutral-600);
 	border-radius: 4px;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	text-align: center;
-
-	transition: background-color var(--transition-duration) var(--transition-timing-function);
+	transition: color var(--transition-duration) var(--transition-timing-function);
 
 	&--flip-layout {
 		flex-direction: row-reverse;
@@ -31,11 +30,12 @@
 	&__player-name {
 		padding: 0 0.4em;
 		font-size: 0.9rem;
+		font-weight: 500;
 		transform: translateY(2px);
 	}
 
 	&--active {
-		background-color: hsla(0, 0%, 31%, 1);
+		color: var(--white);
 	}
 
 	&--active &__player-icon {
