@@ -1,5 +1,3 @@
-import { GameState } from '../types/game';
-
 export const getBoxSidesMap = (rowCount: number, colCount: number) => {
 	if (rowCount <= 0 || colCount <= 0) throw new Error('Row and column counts must be greater than zero.');
 
@@ -23,13 +21,13 @@ export const getBoxSidesMap = (rowCount: number, colCount: number) => {
 	return boxSidesMap;
 };
 
-export const handleGridLineClick = (
+export const handleGridLineClick = <T>(
 	lineId: string,
+	selectedLinesToPlayerMap: Map<string, T>,
+	capturedBoxesMap: Map<string, T>,
 	boxSidesMap: Map<string, string[]>,
-	playerCount: number,
-	gameState: GameState
+	playerTurn: T
 ) => {
-	const { selectedLinesToPlayerMap, capturedBoxesMap, playerTurn } = gameState;
 	if (selectedLinesToPlayerMap.has(lineId)) return;
 
 	selectedLinesToPlayerMap.set(lineId, playerTurn);
@@ -48,7 +46,7 @@ export const handleGridLineClick = (
 	return {
 		selectedLinesToPlayerMap,
 		capturedBoxesMap,
-		playerTurn: hasCapturedNewBox ? playerTurn : playerTurn >= playerCount ? 1 : playerTurn + 1
+		hasCapturedNewBox
 	};
 };
 

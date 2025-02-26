@@ -1,7 +1,7 @@
 .grid-box {
 	width: var(--game-grid-box-size);
 	height: var(--game-grid-box-size);
-	background-color: var(--neutral-800);
+	background-color: var(--player-color);
 	clip-path: circle(0% at 50% 50%);
 	transition: clip-path var(--transition-duration) var(--transition-timing-function);
 
@@ -9,21 +9,5 @@
 
 	&--captured {
 		clip-path: circle(100%);
-	}
-
-	&.player-1 {
-		background-color: var(--player-1-color);
-	}
-
-	&.player-2 {
-		background-color: var(--player-2-color);
-	}
-
-	&.player-3 {
-		background-color: var(--player-3-color);
-	}
-
-	&.player-4 {
-		background-color: var(--player-4-color);
 	}
 }

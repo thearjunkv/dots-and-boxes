@@ -37,18 +37,20 @@ const GameBoard: React.FC = () => {
 
 	const handleLineClick = (lineId: string) => {
 		const { selectedLinesToPlayerMap, capturedBoxesMap, playerTurn } = gameState;
-		const result = handleGridLineClick(lineId, boxSidesMap, playerCount, {
-			selectedLinesToPlayerMap: new Map(selectedLinesToPlayerMap),
-			capturedBoxesMap: new Map(capturedBoxesMap),
+		const result = handleGridLineClick(
+			lineId,
+			new Map(selectedLinesToPlayerMap),
+			new Map(capturedBoxesMap),
+			boxSidesMap,
 			playerTurn
-		});
+		);
 
 		if (!result) return;
 
 		setGameState({
 			selectedLinesToPlayerMap: result.selectedLinesToPlayerMap,
 			capturedBoxesMap: result.capturedBoxesMap,
-			playerTurn: result.playerTurn
+			playerTurn: result.hasCapturedNewBox ? playerTurn : playerTurn >= playerCount ? 1 : playerTurn + 1
 		});
 	};
 
@@ -63,13 +65,6 @@ const GameBoard: React.FC = () => {
 		const userConfirm = window.confirm('The game will be lost. Are you sure you want to go back?');
 		if (userConfirm) navigate('/offline', { replace: true });
 	};
-
-	const gridStyle = Object.fromEntries(
-		Array.from({ length: gameConfig.playerColorsMap.size }, (_, i) => [
-			`--player-${i + 1}-color`,
-			gameConfig.playerColorsMap.get(i + 1)
-		])
-	) as React.CSSProperties;
 
 	useEffect(() => {
 		const getAllPlayerScores = () =>
@@ -95,10 +90,7 @@ const GameBoard: React.FC = () => {
 
 	return (
 		<>
-			<div
-				className={cn('game-board', `game-board--${gridSize}`)}
-				style={gridStyle}
-			>
+			<div className={cn('game-board', `game-board--${gridSize}`)}>
 				<PrevPageBtn goPrevPage={goBack} />
 				<div className='game-board__game-area'>
 					<div className='game-board__player-cards-container--top'>
@@ -121,7 +113,7 @@ const GameBoard: React.FC = () => {
 							selectedLinesToPlayerMap={gameState.selectedLinesToPlayerMap}
 							capturedBoxesMap={gameState.capturedBoxesMap}
 							handleLineClick={handleLineClick}
-							playerCount={playerCount}
+							playerColorsMap={gameConfig.playerColorsMap}
 						/>
 					</div>
 					<div className='game-board__player-cards-container--bottom'>

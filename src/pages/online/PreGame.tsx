@@ -13,7 +13,9 @@ const PreGame: React.FC = () => {
 	const location = useLocation();
 	const playerId = useMemo(() => getPlayerId(), []);
 
-	const [gameStateServer, setGameStateServer] = useState<GameStateServer | null>(location.state.gameStateServer);
+	const [gameStateServer, setGameStateServer] = useState<GameStateServer | null>(
+		location.state?.gameStateServer || null
+	);
 	const [isStartGameDisabled, setIsStartGameDisabled] = useState<boolean>(true);
 
 	const [popupAlert, setPopupAlert] = useState<{
@@ -44,7 +46,7 @@ const PreGame: React.FC = () => {
 
 	const startGame = () => {
 		if (!socket) return;
-		socket.emit('game:start');
+		socket.emit('room:game:start');
 	};
 
 	useEffect(() => {
@@ -60,15 +62,7 @@ const PreGame: React.FC = () => {
 	useEffect(() => {
 		if (!socket) return;
 
-		const handleConnect = () => {
-			if (gameStateServer) {
-				const { roomId } = gameStateServer;
-				const player = gameStateServer.players.find(pl => pl.playerId === playerId);
-
-				if (player) socket.emit('room:reconnect', { playerId, roomId, playerName: player.playerName });
-				else navigate('/online', { replace: true });
-			} else navigate('/online', { replace: true });
-		};
+		const handleExitRoom = () => navigate('/online', { replace: true });
 
 		const updateGameState = (gameStateServer: GameStateServer) => setGameStateServer(gameStateServer);
 
@@ -84,30 +78,26 @@ const PreGame: React.FC = () => {
 		const handleGameStarted = (gameStateServer: GameStateServer) =>
 			navigate('/online/play', { state: { gameStateServer } });
 
-		socket.on('connect', handleConnect);
-		socket.on('reconnect ', handleConnect);
+		socket.on('connect', handleExitRoom);
+		socket.on('reconnect ', handleExitRoom);
+		socket.on('disconnect', handleExitRoom);
 
-		socket.on('room:reconnect:ack', updateGameState);
-		socket.on('room:refresh:preGame', updateGameState);
+		socket.on('room:update:state', updateGameState);
 
 		socket.on('room:kicked', handleKicked);
 
-		socket.on('game:started', handleGameStarted);
-
-		socket.on('room:playerDisconnect', updateGameState);
+		socket.on('room:game:started', handleGameStarted);
 
 		return () => {
-			socket.off('connect', handleConnect);
-			socket.off('reconnect ', handleConnect);
+			socket.off('connect', handleExitRoom);
+			socket.off('reconnect ', handleExitRoom);
+			socket.off('disconnect', handleExitRoom);
 
-			socket.off('room:reconnect:ack', updateGameState);
-			socket.off('room:refresh:preGame', updateGameState);
+			socket.off('room:update:state', updateGameState);
 
 			socket.off('room:kicked', handleKicked);
 
-			socket.off('game:started', handleGameStarted);
-
-			socket.off('room:playerDisconnect', updateGameState);
+			socket.off('room:game:started', handleGameStarted);
 		};
 	}, [socket, gameStateServer, navigate, playerId]);
 

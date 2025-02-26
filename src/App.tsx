@@ -1,15 +1,17 @@
 import { Route, Routes } from 'react-router';
 import Home from './pages/Home';
+
 import SetupGame from './pages/offline/SetupGame';
-import GameBoard from './pages/offline/GameBoard';
+import GameBoardOffline from './pages/offline/GameBoard';
 
 import SetupRoom from './pages/online/SetupRoom';
 import CreateRoom from './pages/online/CreateRoom';
 import JoinRoom from './pages/online/JoinRoom';
+import PreGame from './pages/online/PreGame';
+
+import SocketStatus from './components/SocketStatus';
 
 import './styles/main.scss';
-import SocketStatus from './components/SocketStatus';
-import PreGame from './pages/online/PreGame';
 
 function App() {
 	return (
@@ -25,7 +27,7 @@ function App() {
 				/>
 				<Route
 					path='play'
-					element={<GameBoard />}
+					element={<GameBoardOffline />}
 				/>
 			</Route>
 			<Route
