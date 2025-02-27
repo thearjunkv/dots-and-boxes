@@ -64,7 +64,7 @@ const PreGame: React.FC = () => {
 
 		const handleExitRoom = () => navigate('/online', { replace: true });
 
-		const updateGameState = (gameStateServer: GameStateServer) => setGameStateServer(gameStateServer);
+		const updateGameStateServer = (gameStateServer: GameStateServer) => setGameStateServer(gameStateServer);
 
 		const handleKicked = () =>
 			setPopupAlert({
@@ -82,7 +82,7 @@ const PreGame: React.FC = () => {
 		socket.on('reconnect ', handleExitRoom);
 		socket.on('disconnect', handleExitRoom);
 
-		socket.on('room:update:state', updateGameState);
+		socket.on('room:update:state', updateGameStateServer);
 
 		socket.on('room:kicked', handleKicked);
 
@@ -93,7 +93,7 @@ const PreGame: React.FC = () => {
 			socket.off('reconnect ', handleExitRoom);
 			socket.off('disconnect', handleExitRoom);
 
-			socket.off('room:update:state', updateGameState);
+			socket.off('room:update:state', updateGameStateServer);
 
 			socket.off('room:kicked', handleKicked);
 
@@ -119,7 +119,7 @@ const PreGame: React.FC = () => {
 				goPrevPage={() =>
 					setPopupAlert({
 						show: true,
-						title: 'Leave Room',
+						title: 'Leave',
 						body: 'Are you sure you want to leave the room?',
 						confirmBtnText: 'Leave',
 						onConfirm: leaveRoom
@@ -136,9 +136,9 @@ const PreGame: React.FC = () => {
 							key={player.playerId}
 						>
 							<p>
-								{player.playerName}{' '}
+								{player.playerName}
 								<span className='pre-game__player--is-host'>
-									{gameStateServer.host === player.playerId && '( host )'}
+									{gameStateServer.host === player.playerId && ' ( host )'}
 								</span>
 							</p>
 							{gameStateServer.host === playerId && player.playerId !== playerId && (

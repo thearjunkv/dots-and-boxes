@@ -26,8 +26,8 @@ const PopupAlert: React.FC<PopupAlertProps> = ({
 			hideCloseButton={hideCloseButton}
 		>
 			<div className='popup-alert'>
-				<h2>{title}</h2>
-				<p>{body}</p>
+				<h2 className='popup-alert__title'>{title}</h2>
+				<p className='popup-alert__body'>{body}</p>
 				<button
 					className='btn'
 					onClick={() => (onConfirm ? onConfirm() : onClose())}

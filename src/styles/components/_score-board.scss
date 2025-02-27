@@ -1,6 +1,7 @@
 .score-board {
 	padding: 1em;
-	width: 250px;
+	width: 90vw;
+	max-width: 400px;
 	text-align: center;
 
 	&__title {
@@ -47,7 +48,21 @@
 		font-weight: 500;
 	}
 
-	& .btn {
-		padding: 0.6em;
+	&__btn-container {
+		display: flex;
+		flex-direction: row-reverse;
+		gap: 0.4em;
+	}
+}
+
+@media screen and (max-width: 425px) {
+	.score-board {
+		&__title {
+			font-size: 1.2rem;
+		}
+
+		&__btn-container {
+			flex-direction: column;
+		}
 	}
 }

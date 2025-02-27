@@ -1,7 +1,6 @@
 .btn,
-.btn--secondary,
-.btn--tertiary {
-	padding: 0.4em;
+.btn--secondary {
+	padding: 0.6em;
 	width: 100%;
 	font-size: 0.9rem;
 	letter-spacing: 0.5px;
@@ -29,14 +28,17 @@
 
 .btn--secondary {
 	background-color: transparent;
-}
-
-.btn--tertiary {
-	background-color: var(--neutral-900);
-	border: 1px solid var(--neutral-900);
+	border-color: var(--neutral-600);
 
 	&:hover {
-		background-color: var(--neutral-900);
-		border-color: var(--neutral-900);
+		background-color: var(--neutral-600);
+		border-color: var(--neutral-600);
+	}
+}
+
+@media screen and (max-width: 425px) {
+	.btn,
+	.btn--secondary {
+		font-size: 0.875rem;
 	}
 }

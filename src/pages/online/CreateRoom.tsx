@@ -57,7 +57,7 @@ const CreateRoom: React.FC = () => {
 	useEffect(() => {
 		if (!socket) return;
 		const handleEvent = () => {
-			setPopupAlert({ show: true, title: 'Action Failed', body: 'Failed to create room.' });
+			setPopupAlert({ show: true, title: 'Error', body: 'Failed to create room.' });
 		};
 		socket.on('error', handleEvent);
 
@@ -88,10 +88,7 @@ const CreateRoom: React.FC = () => {
 					{gameConfig.gridSizes.map(size => (
 						<button
 							key={size}
-							className={cn(
-								'btn--tertiary btn-grid-size',
-								size === gridSize && 'btn-grid-size--selected'
-							)}
+							className={cn('btn btn-grid-size', size === gridSize && 'btn-grid-size--selected')}
 							onClick={() => setGridSize(size)}
 						>
 							{size}

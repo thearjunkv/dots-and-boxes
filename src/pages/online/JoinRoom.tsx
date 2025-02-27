@@ -69,7 +69,7 @@ const JoinRoom: React.FC = () => {
 			const { message } = data;
 			if (message === 'ROOM_NOT_FOUND') body = 'Room not found.';
 			else body = 'Unable to join room.';
-			setPopupAlert({ show: true, title: 'Action Failed', body });
+			setPopupAlert({ show: true, title: 'Error', body });
 		};
 		socket.on('error', handleEvent);
 

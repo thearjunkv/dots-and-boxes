@@ -1,12 +1,12 @@
 .pre-game {
 	width: 90vw;
-	max-width: 450px;
+	max-width: 400px;
 
 	padding: 1em;
 
 	&__players-list {
 		width: 100%;
-		padding: 1em 2em;
+		padding: 1em 0;
 	}
 
 	&__player {
@@ -23,8 +23,8 @@
 		position: relative;
 
 		&--is-host {
-			font-size: 0.7rem;
-			font-weight: 700;
+			font-size: 0.76rem;
+			font-weight: 600;
 			color: var(--neutral-400);
 		}
 	}
@@ -60,13 +60,16 @@
 	}
 
 	&__waiting-message {
-		font-size: 0.9rem;
+		font-size: 1rem;
 		text-align: center;
 	}
+}
 
-	&__btn-start {
-		width: auto;
-		display: block;
-		margin: 0 auto;
+@media screen and (max-width: 425px) {
+	.pre-game {
+		&__player,
+		&__waiting-message {
+			font-size: 0.875rem;
+		}
 	}
 }

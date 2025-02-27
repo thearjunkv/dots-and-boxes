@@ -45,10 +45,7 @@ const SetupGame: React.FC = () => {
 					{gameConfig.gridSizes.map(size => (
 						<button
 							key={size}
-							className={cn(
-								'btn--tertiary btn-grid-size',
-								size === gridSize && 'btn-grid-size--selected'
-							)}
+							className={cn('btn btn-grid-size', size === gridSize && 'btn-grid-size--selected')}
 							onClick={() => setGridSize(size)}
 						>
 							{size}

@@ -1,15 +1,15 @@
 .home {
 	width: 90vw;
-	max-width: 450px;
+	max-width: 400px;
 
 	padding: 1em;
 
-	&__nav-links-container {
+	&__links-container {
 		display: flex;
 		flex-direction: column;
 	}
 
-	&__nav-links-container a {
+	&__links-container a {
 		margin: 0.2em 0;
 		padding: 0.8em;
 
@@ -21,6 +21,14 @@
 
 		&:hover {
 			background-color: var(--neutral-700);
+		}
+	}
+}
+
+@media screen and (max-width: 425px) {
+	.home {
+		&__links-container a {
+			font-size: 0.875rem;
 		}
 	}
 }

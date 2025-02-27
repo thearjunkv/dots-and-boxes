@@ -2,10 +2,11 @@ import { PlayerScore } from '../types/game';
 
 type ScoreboardProps = {
 	playerScores: PlayerScore[];
-	restartGame: () => void;
+	onPlayAgain: () => void;
+	onLeave: () => void;
 };
 
-const Scoreboard: React.FC<ScoreboardProps> = ({ playerScores, restartGame }) => {
+const Scoreboard: React.FC<ScoreboardProps> = ({ playerScores, onPlayAgain, onLeave }) => {
 	return (
 		<div className='score-board'>
 			<h1 className='score-board__title'>Scores</h1>
@@ -29,12 +30,21 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ playerScores, restartGame }) =>
 				))}
 			</div>
 
-			<button
-				className='btn'
-				onClick={restartGame}
-			>
-				Restart
-			</button>
+			<div className='score-board__btn-container'>
+				<button
+					className='btn'
+					onClick={onPlayAgain}
+				>
+					Play again
+				</button>
+
+				<button
+					className='btn--secondary'
+					onClick={onLeave}
+				>
+					Leave
+				</button>
+			</div>
 		</div>
 	);
 };

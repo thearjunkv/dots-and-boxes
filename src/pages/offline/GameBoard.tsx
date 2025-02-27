@@ -15,7 +15,7 @@ const GameBoard: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [gameState, setGameState] = useState<GameState>({
+	const [gameState, setGameState] = useState<GameState<number>>({
 		selectedLinesToPlayerMap: new Map(),
 		capturedBoxesMap: new Map(),
 		playerTurn: 1
@@ -82,7 +82,7 @@ const GameBoard: React.FC = () => {
 		}
 	}, [gameState.capturedBoxesMap, gridRowCount, gridColCount, playerCount]);
 
-	const restartGame = () => {
+	const onPlayAgain = () => {
 		setGameState({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
 		setPlayerScores([]);
 		setIsModalOpen(false);
@@ -138,10 +138,12 @@ const GameBoard: React.FC = () => {
 			<Modal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
+				hideCloseButton={true}
 			>
 				<Scoreboard
 					playerScores={playerScores}
-					restartGame={restartGame}
+					onPlayAgain={onPlayAgain}
+					onLeave={() => navigate('/offline', { replace: true })}
 				/>
 			</Modal>
 		</>
