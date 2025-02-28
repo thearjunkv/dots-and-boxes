@@ -1,5 +1,5 @@
 .player-card {
-	padding: 0.2em 0.4em;
+	padding: 0.4em;
 
 	background-color: var(--neutral-900);
 	color: var(--neutral-600);
@@ -29,7 +29,7 @@
 
 	&__player-name {
 		padding: 0 0.4em;
-		font-size: 0.9rem;
+		font-size: 0.875rem;
 		font-weight: 500;
 		transform: translateY(2px);
 	}
