@@ -1,9 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import Scoreboard from '../../src/components/Scoreboard';
 import { PlayerScore } from '../../src/types/game';
+import userEvent from '@testing-library/user-event';
 
 describe('Scoreboard component', () => {
-	it('should render the scoreboard with provided data', () => {
+	it('should render the scoreboard with provided data', async () => {
+		const onPlayAgain = vi.fn(() => {});
+		const onLeave = vi.fn(() => {});
 		const playerScores: PlayerScore[] = [
 			{
 				playerId: 1,
@@ -19,7 +22,8 @@ describe('Scoreboard component', () => {
 		render(
 			<Scoreboard
 				playerScores={playerScores}
-				restartGame={() => {}}
+				onPlayAgain={onPlayAgain}
+				onLeave={onLeave}
 			/>
 		);
 
@@ -33,5 +37,13 @@ describe('Scoreboard component', () => {
 
 		expect(screen.getByText('20')).toBeInTheDocument();
 		expect(screen.getByText('15')).toBeInTheDocument();
+
+		const user = userEvent.setup();
+
+		await user.click(screen.getByText(/play again/i));
+		expect(onPlayAgain).toHaveBeenCalledOnce();
+
+		await user.click(screen.getByText(/leave/i));
+		expect(onLeave).toHaveBeenCalledOnce();
 	});
 });

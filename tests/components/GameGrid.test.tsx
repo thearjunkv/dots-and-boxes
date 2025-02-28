@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import GameGrid from '../../src/components/GameGrid';
 import { getTotalGridLines, getTotalHorizontalGridLines, getTotalVerticalGridLines } from '../../src/utils/gameUtils';
 import { testIds } from '../../src/constants/testIds';
+import { gameConfig } from '../../src/constants/gameConfig';
+import { checkPlayerColor } from '../../src/utils/testUtils';
 
 describe('GameGrid component', () => {
 	const initialProps = {
@@ -10,7 +12,7 @@ describe('GameGrid component', () => {
 		capturedBoxesMap: new Map(),
 		selectedLinesToPlayerMap: new Map(),
 		handleLineClick: () => {},
-		playerCount: 4
+		playerColorsMap: gameConfig.playerColorsMap
 	};
 
 	it('should render with correct number of grid lines and boxes for 5x5', () => {
@@ -117,15 +119,13 @@ describe('GameGrid component', () => {
 				selectedLinesToPlayerMap={
 					new Map([
 						['0-0', 1],
-						['0-1', 2],
-						['0-2', 1]
+						['0-1', 2]
 					])
 				}
 				capturedBoxesMap={
 					new Map([
 						['0-0', 1],
-						['0-1', 2],
-						['0-2', 1]
+						['0-1', 2]
 					])
 				}
 			/>
@@ -133,12 +133,15 @@ describe('GameGrid component', () => {
 		const gridLines = screen.getAllByTestId(testIds.GRID_LINE);
 		const gridBoxes = screen.getAllByTestId(testIds.GRID_BOX);
 
-		expect(gridLines[0]).toHaveClass('player-1');
-		expect(gridLines[1]).toHaveClass('player-2');
-		expect(gridLines[2]).toHaveClass('player-1');
+		const player1Color = gameConfig.playerColorsMap.get(1);
+		const player2Color = gameConfig.playerColorsMap.get(2);
+		expect(typeof player1Color).toBe('string');
+		expect(typeof player2Color).toBe('string');
 
-		expect(gridBoxes[0]).toHaveClass('player-1');
-		expect(gridBoxes[1]).toHaveClass('player-2');
-		expect(gridBoxes[2]).toHaveClass('player-1');
+		checkPlayerColor(gridLines[0], player1Color as string);
+		checkPlayerColor(gridBoxes[0], player1Color as string);
+
+		checkPlayerColor(gridLines[1], player2Color as string);
+		checkPlayerColor(gridBoxes[1], player2Color as string);
 	});
 });

@@ -4,7 +4,20 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import GameBoard from '../../src/pages/offline/GameBoard';
 import { testIds } from '../../src/constants/testIds';
 import { getTotalGridLines } from '../../src/utils/gameUtils';
-import { getActivePlayerCard, getCapturedGridBoxes, getSelectedGridLines } from '../../src/utils/testUtils';
+import {
+	checkPlayerColor,
+	getActivePlayerCard,
+	getCapturedGridBoxes,
+	getSelectedGridLines
+} from '../../src/utils/testUtils';
+import { gameConfig } from '../../src/constants/gameConfig';
+
+const { playerColorsMap } = gameConfig;
+if (playerColorsMap.size !== 4) throw new Error('Player colors missing from gameConfig');
+
+for (const color of playerColorsMap.values()) {
+	if (typeof color !== 'string') throw new Error('Invalid player color found in gameConfig');
+}
 
 describe('GameBoard component', () => {
 	beforeEach(() => {
@@ -49,9 +62,9 @@ describe('GameBoard component', () => {
 		await user.click(gridLines[0]);
 
 		const selectedGridLines = getSelectedGridLines(gridLines);
-		expect(selectedGridLines).toHaveLength(1);
-		expect(selectedGridLines[0]).toHaveClass('player-1');
 
+		expect(selectedGridLines).toHaveLength(1);
+		checkPlayerColor(selectedGridLines[0], playerColorsMap.get(1) as string);
 		expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 2/i);
 	});
 
@@ -67,9 +80,9 @@ describe('GameBoard component', () => {
 		const selectedGridLines = getSelectedGridLines(gridLines);
 
 		expect(selectedGridLines).toHaveLength(3);
-		expect(selectedGridLines[0]).toHaveClass('player-1');
-		expect(selectedGridLines[1]).toHaveClass('player-2');
-		expect(selectedGridLines[2]).toHaveClass('player-3');
+		checkPlayerColor(selectedGridLines[0], playerColorsMap.get(1) as string);
+		checkPlayerColor(selectedGridLines[1], playerColorsMap.get(2) as string);
+		checkPlayerColor(selectedGridLines[2], playerColorsMap.get(3) as string);
 
 		expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 4/i);
 	});
@@ -88,10 +101,10 @@ describe('GameBoard component', () => {
 			const selectedGridLines = getSelectedGridLines(gridLines);
 
 			expect(selectedGridLines).toHaveLength(4);
-			expect(selectedGridLines[0]).toHaveClass('player-1');
-			expect(selectedGridLines[1]).toHaveClass('player-2');
-			expect(selectedGridLines[2]).toHaveClass('player-3');
-			expect(selectedGridLines[3]).toHaveClass('player-4');
+			checkPlayerColor(selectedGridLines[0], playerColorsMap.get(1) as string);
+			checkPlayerColor(selectedGridLines[1], playerColorsMap.get(2) as string);
+			checkPlayerColor(selectedGridLines[2], playerColorsMap.get(3) as string);
+			checkPlayerColor(selectedGridLines[3], playerColorsMap.get(4) as string);
 
 			expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 1/i);
 		}
@@ -100,12 +113,13 @@ describe('GameBoard component', () => {
 
 		{
 			const selectedGridLines = getSelectedGridLines(gridLines);
+
 			expect(selectedGridLines).toHaveLength(5);
-			expect(selectedGridLines[0]).toHaveClass('player-1');
-			expect(selectedGridLines[1]).toHaveClass('player-2');
-			expect(selectedGridLines[2]).toHaveClass('player-3');
-			expect(selectedGridLines[3]).toHaveClass('player-4');
-			expect(selectedGridLines[4]).toHaveClass('player-1');
+			checkPlayerColor(selectedGridLines[0], playerColorsMap.get(1) as string);
+			checkPlayerColor(selectedGridLines[1], playerColorsMap.get(2) as string);
+			checkPlayerColor(selectedGridLines[2], playerColorsMap.get(3) as string);
+			checkPlayerColor(selectedGridLines[3], playerColorsMap.get(4) as string);
+			checkPlayerColor(selectedGridLines[4], playerColorsMap.get(1) as string);
 
 			expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 2/i);
 		}
@@ -122,7 +136,7 @@ describe('GameBoard component', () => {
 
 		const selectedGridLines = getSelectedGridLines(gridLines);
 		expect(selectedGridLines).toHaveLength(1);
-		expect(selectedGridLines[0]).toHaveClass('player-1');
+		checkPlayerColor(selectedGridLines[0], playerColorsMap.get(1) as string);
 
 		expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 2/i);
 	});
@@ -144,12 +158,11 @@ describe('GameBoard component', () => {
 
 		const capturedGridBoxes = getCapturedGridBoxes(gridBoxes);
 		expect(capturedGridBoxes).toHaveLength(1);
-		expect(capturedGridBoxes[0]).toHaveClass('player-4');
+		checkPlayerColor(capturedGridBoxes[0], playerColorsMap.get(4) as string);
 
 		expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 4/i);
 
 		await user.click(gridLines[12]);
-
 		expect(getActivePlayerCard(playerCards)).toHaveTextContent(/player 1/i);
 	});
 });
