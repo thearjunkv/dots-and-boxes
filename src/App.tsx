@@ -8,6 +8,7 @@ import SetupRoom from './pages/online/SetupRoom';
 import CreateRoom from './pages/online/CreateRoom';
 import JoinRoom from './pages/online/JoinRoom';
 import PreGame from './pages/online/PreGame';
+import GameBoardOnline from './pages/online/GameBoard';
 
 import SocketStatus from './components/SocketStatus';
 
@@ -47,6 +48,10 @@ function App() {
 				<Route
 					path='pre-game'
 					element={<PreGame />}
+				/>
+				<Route
+					path='play'
+					element={<GameBoardOnline />}
 				/>
 			</Route>
 		</Routes>
