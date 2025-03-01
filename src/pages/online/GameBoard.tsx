@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../../components/GameGrid';
 import { gameConfig } from '../../constants/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../../types/guards';
-import { getPlayerId, handleGridLineClick } from '../../utils/gameUtils';
+import { getBoxSides, getIntersectingBoxIds, getPlayerId } from '../../utils/gameUtils';
 import { cn } from '../../utils/helpers';
 import PlayerCard from '../../components/PlayerCard';
 import Modal from '../../components/Modal';
 import Scoreboard from '../../components/Scoreboard';
-import { GameState, GameStateServer, PlayerScore } from '../../types/game';
+import { GameState, GameStateServer, PlayerScore, SavedGameProgress } from '../../types/game';
 import PrevPageBtn from '../../components/PrevPageBtn';
 import { useSocket } from '../../hooks/useSocket';
 import PopupAlert from '../../components/PopupAlert';
@@ -64,52 +64,110 @@ const GameBoard: React.FC = () => {
 	}, [gameStateServer]);
 
 	const handleLineClick = (lineId: string) => {
-		if (!gameStateServer) return;
-		if (!socket) return;
+		if (!gameStateServer || !socket) return;
+		if (gameStateClient.selectedLinesToPlayerMap.has(lineId)) return;
+		if (gameStateServer.nextMove !== playerId) return;
 
-		const { selectedLinesToPlayerMap } = gameStateClient;
-		if (selectedLinesToPlayerMap.has(lineId)) return;
+		const selectedLinesToPlayerMap = new Map(gameStateClient.selectedLinesToPlayerMap);
+		const capturedBoxesMap = new Map(gameStateClient.capturedBoxesMap);
 
-		if (gameStateServer.currentMove !== playerId) return;
+		const newlyCapturedBoxes: { id: string; by: string }[] = [];
 
-		// socket.emit('room:game:move', { selectedGridLine, shouldSwitchPlayer, isLastMove });
+		selectedLinesToPlayerMap.set(lineId, playerId);
 
-		// const result = handleGridLineClick(
-		// 	lineId,
-		// 	new Map(selectedLinesToPlayerMap),
-		// 	new Map(capturedBoxesMap),
-		// 	boxSidesMap,
-		// 	gameStateServer.currentMove
-		// );
+		let hasCapturedNewBox: boolean = false;
+		const boxIds = getIntersectingBoxIds(lineId, gridRowCount, gridColCount);
 
-		// if (!result) return;
+		boxIds.forEach(boxId => {
+			const sides = getBoxSides(boxId);
 
-		// setGameStateClient({
-		// 	selectedLinesToPlayerMap: result.selectedLinesToPlayerMap,
-		// 	capturedBoxesMap: result.capturedBoxesMap
-		// });
+			const allSelected = sides.every(side => selectedLinesToPlayerMap.has(side));
+			if (!allSelected) return;
+
+			if (capturedBoxesMap.has(boxId)) return;
+			capturedBoxesMap.set(boxId, playerId);
+			newlyCapturedBoxes.push({ id: boxId, by: playerId });
+			hasCapturedNewBox = true;
+		});
+
+		setGameStateClient({
+			selectedLinesToPlayerMap,
+			capturedBoxesMap
+		});
+
+		let nextMove: string = gameStateServer.nextMove;
+
+		if (!hasCapturedNewBox) {
+			let playerIndex = gameStateServer.players.findIndex(pl => pl.playerId === playerId);
+
+			if (playerIndex === -1) {
+				setPopupAlert({
+					show: true,
+					title: 'Error',
+					body: 'An unexpected error occurred. Try refreshing the page.'
+				});
+				return;
+			}
+			let switched: boolean = false;
+			while (!switched) {
+				playerIndex += 1;
+				if (playerIndex >= gameStateServer.players.length) {
+					playerIndex = 0;
+				}
+				const player = gameStateServer.players[playerIndex];
+				if (player.isConnected) {
+					nextMove = player.playerId;
+					switched = true;
+				}
+			}
+		}
+
+		socket.emit('room:game:move', {
+			selectedLine: { id: lineId, by: playerId },
+			capturedBoxes: newlyCapturedBoxes,
+			nextMove,
+			isLastMove: capturedBoxesMap.size === gridRowCount * gridColCount
+		});
 	};
 
 	const onPlayAgain = () => {
-		if (!socket) return;
-		if (!gameStateServer) return;
+		if (!socket || !gameStateServer) return;
 
-		const player = gameStateServer?.players.find(pl => pl.playerId === playerId);
+		const player = gameStateServer.players.find(pl => pl.playerId === playerId);
 		if (!player) return;
 
 		socket.emit('room:rejoin', { playerId, playerName: player.playerName, roomId: gameStateServer.roomId });
 	};
 
 	useEffect(() => {
+		if (!gameStateServer) return;
+
+		const getAllPlayerScores = () =>
+			gameStateServer.players
+				.map((pl, i) => ({
+					playerId: i + 1,
+					playerName: pl.playerName,
+					score: [...gameStateClient.capturedBoxesMap].filter(([, value]) => value === pl.playerId).length
+				}))
+				.sort((a, b) => b.score - a.score);
+
+		if (gameStateClient.capturedBoxesMap.size === gridRowCount * gridColCount) {
+			setPlayerScores(() => getAllPlayerScores());
+			setIsModalOpen(true);
+		}
+	}, [gridRowCount, gridColCount, gameStateServer, gameStateClient.capturedBoxesMap]);
+
+	useEffect(() => {
 		if (!socket) return;
 
 		const handleReconnect = () => {
 			if (!socket) return;
-
 			if (!gameStateServer) return;
-
-			const player = gameStateServer?.players.find(pl => pl.playerId === playerId);
-			if (!player) return;
+			const player = gameStateServer.players.find(pl => pl.playerId === playerId);
+			if (!player) {
+				redirectOnline();
+				return;
+			}
 
 			socket.emit('room:game:reconnect', {
 				playerId,
@@ -118,43 +176,73 @@ const GameBoard: React.FC = () => {
 			});
 		};
 
+		const updateReconnectAck = (data: { gameState: GameStateServer; savedGameProgress: SavedGameProgress }) => {
+			const { gameState, savedGameProgress } = data;
+			setGameStateServer(gameState);
+			setGameStateClient({
+				selectedLinesToPlayerMap: new Map(savedGameProgress.selectedLines),
+				capturedBoxesMap: new Map(savedGameProgress.capturedBoxes)
+			});
+		};
+
+		const handleRoomRejoinAck = (gameStateServer: GameStateServer) =>
+			navigate('/pre-game', { state: { gameStateServer }, replace: true });
+
 		const updateGameStateServer = (gameStateServer: GameStateServer) => setGameStateServer(gameStateServer);
 
-		const handleGameUpdateBoard = () => {
-			/*
+		const handleGameUpdateBoard = (data: {
+			selectedLine: {
+				id: string;
+				by: string;
+			};
+			capturedBoxes: {
+				id: string;
+				by: string;
+			}[];
+			gameState: GameStateServer;
+		}) => {
+			if (!gameStateServer || !socket) return;
 
+			const { selectedLine, capturedBoxes, gameState } = data;
+			setGameStateServer(gameState);
 
-            */
+			setGameStateClient(p => {
+				const selectedLinesToPlayerMap = new Map(p.selectedLinesToPlayerMap);
+				const capturedBoxesMap = new Map(p.capturedBoxesMap);
+
+				selectedLinesToPlayerMap.set(selectedLine.id, selectedLine.by);
+				capturedBoxes.forEach(box => capturedBoxesMap.set(box.id, box.by));
+				return {
+					selectedLinesToPlayerMap: selectedLinesToPlayerMap,
+					capturedBoxesMap: capturedBoxesMap
+				};
+			});
 		};
+
+		const handleError = () => redirectOnline();
 
 		socket.on('connect', handleReconnect);
 		socket.on('reconnect ', handleReconnect);
-		socket.on('room:game:reconnect:ack', updateGameStateServer);
+		socket.on('room:game:reconnect:ack', updateReconnectAck);
+		socket.on('room:rejoin:ack', handleRoomRejoinAck);
 
 		socket.on('room:update:state', updateGameStateServer);
 
 		socket.on('room:game:updateBoard', handleGameUpdateBoard);
+		socket.on('error', handleError);
 
 		return () => {
 			socket.off('connect', handleReconnect);
 			socket.off('reconnect ', handleReconnect);
-			socket.off('room:game:reconnect:ack', updateGameStateServer);
+			socket.off('room:game:reconnect:ack', updateReconnectAck);
+			socket.off('room:rejoin:ack', handleRoomRejoinAck);
 
 			socket.off('room:update:state', updateGameStateServer);
 
 			socket.off('room:game:updateBoard', handleGameUpdateBoard);
+			socket.off('error', handleError);
 		};
-	}, [socket, gameStateServer, navigate, playerId, redirectOnline]);
-
-	useEffect(() => {
-		if (!socket) return;
-		const handleEvent = () => redirectOnline();
-
-		socket.on('error', handleEvent);
-		return () => {
-			socket.off('error', handleEvent);
-		};
-	}, [navigate, socket, redirectOnline]);
+	}, [socket, gameStateServer, navigate, playerId, redirectOnline, gameStateClient, gridRowCount, gridColCount]);
 
 	if (!gameStateServer) return null;
 
@@ -170,7 +258,6 @@ const GameBoard: React.FC = () => {
 							confirmBtnText: 'Leave',
 							onConfirm: () => {
 								if (!socket) return;
-
 								socket.emit('room:game:leave');
 								redirectOnline();
 							}
@@ -182,12 +269,12 @@ const GameBoard: React.FC = () => {
 						<PlayerCard
 							playerId={1}
 							playerName={gameStateServer.players[0].playerName}
-							isPlayerTurn={gameStateServer.currentMove === gameStateServer.players[0].playerId}
+							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[0].playerId}
 						/>
 						<PlayerCard
 							playerId={2}
 							playerName={gameStateServer.players[1].playerName}
-							isPlayerTurn={gameStateServer.currentMove === gameStateServer.players[1].playerId}
+							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[1].playerId}
 							flipLayout={true}
 						/>
 					</div>
@@ -206,14 +293,14 @@ const GameBoard: React.FC = () => {
 							<PlayerCard
 								playerId={3}
 								playerName={gameStateServer.players[2].playerName}
-								isPlayerTurn={gameStateServer.currentMove === gameStateServer.players[2].playerId}
+								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[2].playerId}
 							/>
 						)}
 						{playerCount > 3 && (
 							<PlayerCard
 								playerId={4}
 								playerName={gameStateServer.players[3].playerName}
-								isPlayerTurn={gameStateServer.currentMove === gameStateServer.players[3].playerId}
+								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[3].playerId}
 								flipLayout={true}
 							/>
 						)}
