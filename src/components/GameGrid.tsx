@@ -1,4 +1,4 @@
-import { convertEvenNumToIndex, convertOddNumToIndex } from '../utils/gameUtils';
+import { evenToPos, oddToPos } from '../utils/gameUtils';
 import GridBox from './GridBox';
 import GridLine from './GridLine';
 
@@ -21,28 +21,32 @@ const GameGrid = <T,>({
 }: GameGridProps<T>) => {
 	return (
 		<div className='game-grid'>
-			{Array.from({ length: rowCount * 2 + 1 }, (_, rowIndex) => {
-				if (rowIndex % 2 === 0)
+			{Array.from({ length: rowCount * 2 + 1 }, (_, rowIndexTemp) => {
+				const rowIndex = rowIndexTemp + 1;
+
+				if (rowIndex % 2 === 1)
 					return (
 						<div key={`row-${rowIndex}`}>
-							{Array.from({ length: colCount * 2 + 1 }, (_, colIndex) => {
+							{Array.from({ length: colCount * 2 + 1 }, (_, colIndexTemp) => {
+								const colIndex = colIndexTemp + 1;
 								const key = `${rowIndex}-${colIndex}`;
 
-								const horizontalLineIndex = `${rowIndex}-${convertOddNumToIndex(colIndex)}`;
-								const selectedBy = selectedLinesToPlayerMap.get(horizontalLineIndex);
-
-								if (colIndex % 2 === 0)
+								if (colIndex % 2 === 1)
 									return (
 										<div
-											key={`dot-${key}`}
+											key={key}
 											className='game-grid__grid-dot'
 										/>
 									);
+
+								const horizontalLineId = `${rowIndex}-${evenToPos(colIndex)}`;
+								const selectedBy = selectedLinesToPlayerMap.get(horizontalLineId);
+
 								return (
 									<GridLine
 										alignment='horizontal'
-										key={`horizontal-line-${key}`}
-										handleLineClick={() => handleLineClick(horizontalLineIndex)}
+										key={key}
+										handleLineClick={() => handleLineClick(horizontalLineId)}
 										isSelected={!!selectedBy}
 										playerColor={selectedBy && playerColorsMap.get(selectedBy)}
 									/>
@@ -52,29 +56,30 @@ const GameGrid = <T,>({
 					);
 				return (
 					<div key={`row-${rowIndex}`}>
-						{Array.from({ length: colCount * 2 + 1 }, (_, colIndex) => {
+						{Array.from({ length: colCount * 2 + 1 }, (_, colIndexTemp) => {
+							const colIndex = colIndexTemp + 1;
 							const key = `${rowIndex}-${colIndex}`;
 
-							const verticalLineIndex = `${rowIndex}-${convertEvenNumToIndex(colIndex)}`;
-							const selectedBy = selectedLinesToPlayerMap.get(verticalLineIndex);
+							if (colIndex % 2 === 1) {
+								const verticalLineId = `${rowIndex}-${oddToPos(colIndex)}`;
+								const selectedBy = selectedLinesToPlayerMap.get(verticalLineId);
 
-							const boxId = `${convertOddNumToIndex(rowIndex)}-${convertOddNumToIndex(colIndex)}`;
-							const capturedBy = capturedBoxesMap.get(boxId);
-
-							if (colIndex % 2 === 0)
 								return (
 									<GridLine
 										alignment='vertical'
-										key={`vertical-line-${key}`}
-										handleLineClick={() => handleLineClick(verticalLineIndex)}
+										key={key}
+										handleLineClick={() => handleLineClick(verticalLineId)}
 										isSelected={!!selectedBy}
 										playerColor={selectedBy && playerColorsMap.get(selectedBy)}
 									/>
 								);
+							}
+							const boxId = `${evenToPos(rowIndex)}-${evenToPos(colIndex)}`;
+							const capturedBy = capturedBoxesMap.get(boxId);
 
 							return (
 								<GridBox
-									key={`box-${key}`}
+									key={key}
 									isCaptured={!!capturedBy}
 									playerColor={capturedBy && playerColorsMap.get(capturedBy)}
 								/>

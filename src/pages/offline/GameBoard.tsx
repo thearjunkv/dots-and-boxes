@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../../components/GameGrid';
 import { gameConfig } from '../../constants/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../../types/guards';
-import { getBoxSidesMap, handleGridLineClick } from '../../utils/gameUtils';
+import { handleGridLineClick } from '../../utils/gameUtils';
 import { cn } from '../../utils/helpers';
 import PlayerCard from '../../components/PlayerCard';
 import Modal from '../../components/Modal';
@@ -33,15 +33,14 @@ const GameBoard: React.FC = () => {
 	const gridSize = isValidGridSize(gridSizeData) ? gridSizeData : gameConfig.gridSizes[0];
 	const [gridRowCount, gridColCount] = gameConfig.gridSizeMap[gridSize];
 
-	const boxSidesMap = useMemo(() => getBoxSidesMap(gridRowCount, gridColCount), [gridRowCount, gridColCount]);
-
 	const handleLineClick = (lineId: string) => {
 		const { selectedLinesToPlayerMap, capturedBoxesMap, playerTurn } = gameState;
 		const result = handleGridLineClick(
+			gridRowCount,
+			gridColCount,
 			lineId,
 			new Map(selectedLinesToPlayerMap),
 			new Map(capturedBoxesMap),
-			boxSidesMap,
 			playerTurn
 		);
 

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import GameGrid from '../../components/GameGrid';
 import { gameConfig } from '../../constants/gameConfig';
 import { isValidGridSize, isValidPlayerCount } from '../../types/guards';
-import { getBoxSidesMap, getPlayerId, handleGridLineClick } from '../../utils/gameUtils';
+import { getPlayerId, handleGridLineClick } from '../../utils/gameUtils';
 import { cn } from '../../utils/helpers';
 import PlayerCard from '../../components/PlayerCard';
 import Modal from '../../components/Modal';
@@ -48,8 +48,6 @@ const GameBoard: React.FC = () => {
 	const playerCount = isValidPlayerCount(playerCountData) ? playerCountData : gameConfig.playerCounts[0];
 	const gridSize = isValidGridSize(gridSizeData) ? gridSizeData : gameConfig.gridSizes[0];
 	const [gridRowCount, gridColCount] = gameConfig.gridSizeMap[gridSize];
-
-	const boxSidesMap = useMemo(() => getBoxSidesMap(gridRowCount, gridColCount), [gridRowCount, gridColCount]);
 
 	const redirectOnline = useCallback(() => navigate('/online', { replace: true }), [navigate]);
 

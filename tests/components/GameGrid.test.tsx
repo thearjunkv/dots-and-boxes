@@ -3,7 +3,7 @@ import GameGrid from '../../src/components/GameGrid';
 import { getTotalGridLines, getTotalHorizontalGridLines, getTotalVerticalGridLines } from '../../src/utils/gameUtils';
 import { testIds } from '../../src/constants/testIds';
 import { gameConfig } from '../../src/constants/gameConfig';
-import { checkPlayerColor } from '../../src/utils/testUtils';
+import { checkPlayerColor, getCapturedGridBoxes, getSelectedGridLines } from '../../src/utils/testUtils';
 
 describe('GameGrid component', () => {
 	const initialProps = {
@@ -90,14 +90,14 @@ describe('GameGrid component', () => {
 				{...initialProps}
 				selectedLinesToPlayerMap={
 					new Map([
-						['0-0', 1],
-						['0-1', 2]
+						['1-1', 1],
+						['1-2', 2]
 					])
 				}
 				capturedBoxesMap={
 					new Map([
-						['0-0', 1],
-						['0-1', 2]
+						['1-1', 1],
+						['1-2', 2]
 					])
 				}
 			/>
@@ -105,8 +105,8 @@ describe('GameGrid component', () => {
 		const gridLines = screen.getAllByTestId(testIds.GRID_LINE);
 		const gridBoxes = screen.getAllByTestId(testIds.GRID_BOX);
 
-		expect(gridLines.filter(line => line.classList.contains('grid-line--selected'))).toHaveLength(2);
-		expect(gridBoxes.filter(box => box.classList.contains('grid-box--captured'))).toHaveLength(2);
+		expect(getSelectedGridLines(gridLines)).toHaveLength(2);
+		expect(getCapturedGridBoxes(gridBoxes)).toHaveLength(2);
 	});
 
 	it('should apply the correct player styling for the selected lines and captured boxes', () => {
@@ -118,14 +118,14 @@ describe('GameGrid component', () => {
 				colCount={colCount}
 				selectedLinesToPlayerMap={
 					new Map([
-						['0-0', 1],
-						['0-1', 2]
+						['1-1', 1],
+						['1-2', 2]
 					])
 				}
 				capturedBoxesMap={
 					new Map([
-						['0-0', 1],
-						['0-1', 2]
+						['1-1', 1],
+						['1-2', 2]
 					])
 				}
 			/>
