@@ -142,7 +142,12 @@ const GameBoard: React.FC = () => {
 		const player = gameStateServer.players.find(pl => pl.playerId === playerId);
 		if (!player) return;
 
-		socket.emit('room:rejoin', { playerId, playerName: player.playerName, roomId: gameStateServer.roomId });
+		socket.emit('room:rejoin', {
+			playerId,
+			playerName: player.playerName,
+			roomId: gameStateServer.roomId,
+			gridSize: gameStateServer.gridSize
+		});
 	};
 
 	const handleGameUpdateBoard = useCallback(
