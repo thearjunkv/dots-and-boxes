@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { GameStateServer, GridSize } from '../../types/game';
 import { gameConfig } from '../../constants/gameConfig';
 import { cn } from '../../utils/helpers';
@@ -6,6 +6,7 @@ import { useSocket } from '../../hooks/useSocket';
 import { getPlayerId } from '../../utils/gameUtils';
 import { useNavigate } from 'react-router';
 import PopupAlert from '../../components/PopupAlert';
+import { useSocketEvent } from '../../hooks/useSocketEvent';
 
 const CreateRoom: React.FC = () => {
 	const [gridSize, setGridSize] = useState<GridSize>(gameConfig.gridSizes[0]);
@@ -27,44 +28,32 @@ const CreateRoom: React.FC = () => {
 
 	const validatePlayerName = (value: string) => {
 		let error = '';
-
 		if (value.trim() === '') error = 'Player name is required';
 		else if (value.length > 8) error = 'Player name should be max 8 characters.';
-
 		setErrors({ playerName: error });
+
 		return { hasError: error.length > 0 };
 	};
 
 	const createRoom = () => {
 		if (validatePlayerName(playerName).hasError) return;
+		if (!socket) return;
 
 		const playerId = getPlayerId();
-		socket?.emit('room:create', { playerId, playerName, gridSize });
+		socket.emit('room:create', { playerId, playerName, gridSize });
 	};
 
-	useEffect(() => {
-		if (!socket) return;
-		const handleEvent = (gameStateServer: GameStateServer) => {
-			navigate('/online/pre-game', { state: { gameStateServer } });
-		};
-		socket.on('room:create:ack', handleEvent);
+	const handleCreateAck = useCallback(
+		(gameStateServer: GameStateServer) => navigate('/online/pre-game', { state: { gameStateServer } }),
+		[navigate]
+	);
+	const handleError = useCallback(
+		() => setPopupAlert({ show: true, title: 'Error', body: 'Failed to create room.' }),
+		[]
+	);
 
-		return () => {
-			socket.off('room:create:ack', handleEvent);
-		};
-	}, [navigate, socket]);
-
-	useEffect(() => {
-		if (!socket) return;
-		const handleEvent = () => {
-			setPopupAlert({ show: true, title: 'Error', body: 'Failed to create room.' });
-		};
-		socket.on('error', handleEvent);
-
-		return () => {
-			socket.off('error', handleEvent);
-		};
-	}, [navigate, socket]);
+	useSocketEvent('room:create:ack', handleCreateAck);
+	useSocketEvent('error', handleError);
 
 	return (
 		<>

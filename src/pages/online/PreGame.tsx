@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSocket } from '../../hooks/useSocket';
 import { useLocation, useNavigate } from 'react-router';
 import { GameStateServer } from '../../types/game';
@@ -6,18 +6,17 @@ import PopupAlert from '../../components/PopupAlert';
 import PrevPageBtn from '../../components/PrevPageBtn';
 import { AddIcon } from '../../assets/Icons';
 import { getPlayerId } from '../../utils/gameUtils';
+import { useSocketEvent } from '../../hooks/useSocketEvent';
 
 const PreGame: React.FC = () => {
 	const socket = useSocket();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const playerId = useMemo(() => getPlayerId(), []);
-
 	const [gameStateServer, setGameStateServer] = useState<GameStateServer | null>(
 		location.state?.gameStateServer || null
 	);
 	const [isStartGameDisabled, setIsStartGameDisabled] = useState<boolean>(true);
-
 	const [popupAlert, setPopupAlert] = useState<{
 		show: boolean;
 		title: string;
@@ -31,16 +30,16 @@ const PreGame: React.FC = () => {
 		body: ''
 	});
 
+	const redirectOnline = useCallback(() => navigate('/online', { replace: true }), [navigate]);
+
 	const leaveRoom = () => {
 		if (!socket) return;
-
 		socket.emit('room:leave');
-		navigate('/online', { replace: true });
+		redirectOnline();
 	};
 
 	const kickPlayer = (targetPlayerId: string) => {
 		if (!socket) return;
-
 		socket.emit('room:kick', { targetPlayerId });
 	};
 
@@ -54,62 +53,37 @@ const PreGame: React.FC = () => {
 			setIsStartGameDisabled(true);
 			return;
 		}
-
 		if (gameStateServer.players.length < 2) setIsStartGameDisabled(true);
 		else setIsStartGameDisabled(false);
 	}, [gameStateServer]);
 
-	useEffect(() => {
-		if (!socket) return;
-
-		const handleExitRoom = () => navigate('/online', { replace: true });
-
-		const updateGameStateServer = (gameStateServer: GameStateServer) => setGameStateServer(gameStateServer);
-
-		const handleKicked = () =>
+	const handleKicked = useCallback(
+		() =>
 			setPopupAlert({
 				show: true,
 				title: 'Kicked Out',
 				body: 'You are kicked by the host.',
 				hideCloseButton: true,
-				onConfirm: () => navigate('/online', { replace: true })
-			});
+				onConfirm: redirectOnline
+			}),
+		[redirectOnline]
+	);
+	const updateGameStateServer = useCallback(
+		(gameStateServer: GameStateServer) => setGameStateServer(gameStateServer),
+		[]
+	);
+	const handleGameStarted = useCallback(
+		(gameStateServer: GameStateServer) => navigate('/online/play', { state: { gameStateServer } }),
+		[navigate]
+	);
 
-		const handleGameStarted = (gameStateServer: GameStateServer) =>
-			navigate('/online/play', { state: { gameStateServer } });
-
-		socket.on('connect', handleExitRoom);
-		socket.on('reconnect ', handleExitRoom);
-		socket.on('disconnect', handleExitRoom);
-
-		socket.on('room:update:state', updateGameStateServer);
-
-		socket.on('room:kicked', handleKicked);
-
-		socket.on('room:game:started', handleGameStarted);
-
-		return () => {
-			socket.off('connect', handleExitRoom);
-			socket.off('reconnect ', handleExitRoom);
-			socket.off('disconnect', handleExitRoom);
-
-			socket.off('room:update:state', updateGameStateServer);
-
-			socket.off('room:kicked', handleKicked);
-
-			socket.off('room:game:started', handleGameStarted);
-		};
-	}, [socket, gameStateServer, navigate, playerId]);
-
-	useEffect(() => {
-		if (!socket) return;
-		const handleEvent = () => navigate('/online', { replace: true });
-
-		socket.on('error', handleEvent);
-		return () => {
-			socket.off('error', handleEvent);
-		};
-	}, [navigate, socket]);
+	useSocketEvent('connect', redirectOnline);
+	useSocketEvent('reconnect', redirectOnline);
+	useSocketEvent('disconnect', redirectOnline);
+	useSocketEvent('room:update:state', updateGameStateServer);
+	useSocketEvent('room:kicked', handleKicked);
+	useSocketEvent('room:game:started', handleGameStarted);
+	useSocketEvent('error', redirectOnline);
 
 	if (!gameStateServer) return null;
 
