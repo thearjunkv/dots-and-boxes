@@ -6,7 +6,6 @@ import { isValidGridSize, isValidPlayerCount } from '../../types/guards';
 import { handleGridLineClick } from '../../utils/gameUtils';
 import { cn } from '../../utils/helpers';
 import PlayerCard from '../../components/PlayerCard';
-import Modal from '../../components/Modal';
 import Scoreboard from '../../components/Scoreboard';
 import { GameState, PlayerScore } from '../../types/game';
 import PrevPageBtn from '../../components/PrevPageBtn';
@@ -23,7 +22,7 @@ const GameBoard: React.FC = () => {
 
 	const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [showScoreboard, setShowScoreboard] = useState<boolean>(false);
 
 	const data = location.state || {};
 	const playerCountData = data.playerCount;
@@ -77,14 +76,13 @@ const GameBoard: React.FC = () => {
 			}).sort((a, b) => b.score - a.score);
 		if (gameState.capturedBoxesMap.size === gridRowCount * gridColCount) {
 			setPlayerScores(() => getAllPlayerScores());
-			setIsModalOpen(true);
+			setShowScoreboard(true);
 		}
 	}, [gameState.capturedBoxesMap, gridRowCount, gridColCount, playerCount]);
 
 	const onPlayAgain = () => {
+		setShowScoreboard(false);
 		setGameState({ selectedLinesToPlayerMap: new Map(), capturedBoxesMap: new Map(), playerTurn: 1 });
-		setPlayerScores([]);
-		setIsModalOpen(false);
 	};
 
 	return (
@@ -134,17 +132,13 @@ const GameBoard: React.FC = () => {
 					</div>
 				</div>
 			</div>
-			<Modal
-				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
-				hideCloseButton={true}
-			>
-				<Scoreboard
-					playerScores={playerScores}
-					onPlayAgain={onPlayAgain}
-					onLeave={() => navigate('/offline', { replace: true })}
-				/>
-			</Modal>
+
+			<Scoreboard
+				isOpen={showScoreboard}
+				playerScores={playerScores}
+				onPlayAgain={onPlayAgain}
+				onLeave={() => navigate('/offline', { replace: true })}
+			/>
 		</>
 	);
 };

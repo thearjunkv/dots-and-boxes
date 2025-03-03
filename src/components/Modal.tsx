@@ -3,7 +3,7 @@ import { cn } from '../utils/helpers';
 
 type ModalProps = {
 	isOpen: boolean;
-	onClose: () => void;
+	onClose?: () => void;
 	children: React.ReactNode;
 	hideCloseButton?: boolean;
 };

@@ -6,7 +6,6 @@ import { isValidGridSize, isValidPlayerCount } from '../../types/guards';
 import { getBoxSides, getIntersectingBoxIds, getPlayerId } from '../../utils/gameUtils';
 import { cn } from '../../utils/helpers';
 import PlayerCard from '../../components/PlayerCard';
-import Modal from '../../components/Modal';
 import Scoreboard from '../../components/Scoreboard';
 import { GameState, GameStateServer, PlayerScore, SavedGameProgress } from '../../types/game';
 import PrevPageBtn from '../../components/PrevPageBtn';
@@ -42,7 +41,7 @@ const GameBoard: React.FC = () => {
 		location.state?.gameStateServer || null
 	);
 	const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [showScoreboard, setShowScoreboard] = useState<boolean>(false);
 
 	const [popupAlert, setPopupAlert] = useState<{
 		show: boolean;
@@ -224,7 +223,7 @@ const GameBoard: React.FC = () => {
 
 		if (gameStateClient.capturedBoxesMap.size === gridRowCount * gridColCount) {
 			setPlayerScores(() => getAllPlayerScores());
-			setIsModalOpen(true);
+			setShowScoreboard(true);
 		}
 	}, [gridRowCount, gridColCount, gameStateServer, gameStateClient.capturedBoxesMap]);
 
@@ -291,16 +290,12 @@ const GameBoard: React.FC = () => {
 					</div>
 				</div>
 			</div>
-			<Modal
-				isOpen={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
-			>
-				<Scoreboard
-					playerScores={playerScores}
-					onPlayAgain={onPlayAgain}
-					onLeave={redirectOnline}
-				/>
-			</Modal>
+			<Scoreboard
+				isOpen={showScoreboard}
+				playerScores={playerScores}
+				onPlayAgain={onPlayAgain}
+				onLeave={redirectOnline}
+			/>
 			<PopupAlert
 				isOpen={popupAlert.show}
 				onClose={() => setPopupAlert(p => ({ ...p, show: false }))}
