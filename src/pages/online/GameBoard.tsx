@@ -82,6 +82,8 @@ const GameBoard: React.FC = () => {
 		if (gameStateClient.selectedLinesToPlayerMap.has(lineId)) return;
 		if (gameStateServer.nextMove !== playerId) return;
 
+		if (gameStateServer.players.filter(pl => pl.isConnected).length === 1) return;
+
 		const selectedLinesToPlayerMap = new Map(gameStateClient.selectedLinesToPlayerMap);
 		const capturedBoxesMap = new Map(gameStateClient.capturedBoxesMap);
 		const newlyCapturedBoxes: { id: string; by: string }[] = [];
@@ -253,12 +255,14 @@ const GameBoard: React.FC = () => {
 							playerId={1}
 							playerName={gameStateServer.players[0].playerName}
 							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[0].playerId}
+							isDisconnected={!gameStateServer.players[0].isConnected}
 						/>
 						<PlayerCard
 							playerId={2}
 							playerName={gameStateServer.players[1].playerName}
 							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[1].playerId}
 							flipLayout={true}
+							isDisconnected={!gameStateServer.players[1].isConnected}
 						/>
 					</div>
 					<div className='game-board__game-grid-wrapper'>
@@ -277,6 +281,7 @@ const GameBoard: React.FC = () => {
 								playerId={3}
 								playerName={gameStateServer.players[2].playerName}
 								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[2].playerId}
+								isDisconnected={!gameStateServer.players[2].isConnected}
 							/>
 						)}
 						{playerCount > 3 && (
@@ -285,6 +290,7 @@ const GameBoard: React.FC = () => {
 								playerName={gameStateServer.players[3].playerName}
 								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[3].playerId}
 								flipLayout={true}
+								isDisconnected={!gameStateServer.players[3].isConnected}
 							/>
 						)}
 					</div>

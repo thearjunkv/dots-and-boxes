@@ -1,3 +1,4 @@
+import { DisconnectedIcon } from '../assets/Icons';
 import { testIds } from '../constants/testIds';
 import { cn } from '../utils/helpers';
 import { getTestId } from '../utils/testUtils';
@@ -7,9 +8,10 @@ type PlayerCardProps = {
 	playerName: string;
 	isPlayerTurn?: boolean;
 	flipLayout?: boolean;
+	isDisconnected?: boolean;
 };
 
-const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn, flipLayout }) => {
+const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn, flipLayout, isDisconnected }) => {
 	const playerIconPath = `/assets/player-${playerId}.svg`;
 
 	return (
@@ -17,7 +19,8 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerT
 			className={cn(
 				'player-card',
 				isPlayerTurn && 'player-card--active',
-				flipLayout && 'player-card--flip-layout'
+				flipLayout && 'player-card--flip-layout',
+				isDisconnected && 'player-card--disconnected'
 			)}
 			data-testid={getTestId(testIds.PLAYER_CARD)}
 		>
@@ -29,6 +32,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerT
 				/>
 			</div>
 			<div className='player-card__player-name'>{playerName}</div>
+			<div className='player-card__icon-disconnected'>{DisconnectedIcon}</div>
 		</div>
 	);
 };

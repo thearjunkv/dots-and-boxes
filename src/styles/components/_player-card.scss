@@ -5,6 +5,9 @@
 	color: var(--neutral-600);
 	border-radius: 4px;
 
+	position: relative;
+	overflow: hidden;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -40,6 +43,27 @@
 
 	&--active &__player-icon {
 		filter: grayscale(0%);
+		opacity: 1;
+	}
+
+	&__icon-disconnected {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: hsla(0, 0%, 10%, 0.8);
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		opacity: 0;
+		transition: opacity var(--transition-duration) var(--transition-timing-function);
+
+		& svg path {
+			fill: var(--neutral-400);
+		}
+	}
+	&--disconnected &__icon-disconnected {
 		opacity: 1;
 	}
 }
