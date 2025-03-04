@@ -36,24 +36,25 @@ describe('PlayerCard component', () => {
 		expect(screen.getByTestId(testIds.PLAYER_CARD)).not.toHaveClass('player-card--active');
 	});
 
-	it('should apply flipped layout styling when flipLayout is true', () => {
+	it('should apply disconnected styling when player is disconnected', () => {
 		render(
 			<PlayerCard
 				playerId={1}
 				playerName='Player 1'
-				flipLayout={true}
+				isDisconnected={true}
 			/>
 		);
-		expect(screen.getByTestId(testIds.PLAYER_CARD)).toHaveClass('player-card--flip-layout');
+		expect(screen.getByTestId(testIds.PLAYER_CARD)).toHaveClass('player-card--disconnected');
 	});
 
-	it('should not apply flipped layout styling when flipLayout is not set', () => {
+	it('should not apply disconnected styling when player is not disconnected', () => {
 		render(
 			<PlayerCard
 				playerId={1}
 				playerName='Player 1'
+				isDisconnected={false}
 			/>
 		);
-		expect(screen.getByTestId(testIds.PLAYER_CARD)).not.toHaveClass('player-card--flip-layout');
+		expect(screen.getByTestId(testIds.PLAYER_CARD)).not.toHaveClass('player-card--disconnected');
 	});
 });

@@ -21,6 +21,7 @@ describe('Scoreboard component', () => {
 		];
 		render(
 			<Scoreboard
+				isOpen={true}
 				playerScores={playerScores}
 				onPlayAgain={onPlayAgain}
 				onLeave={onLeave}
