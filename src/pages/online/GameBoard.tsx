@@ -261,7 +261,6 @@ const GameBoard: React.FC = () => {
 							playerId={2}
 							playerName={gameStateServer.players[1].playerName}
 							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[1].playerId}
-							flipLayout={true}
 							isDisconnected={!gameStateServer.players[1].isConnected}
 						/>
 					</div>
@@ -289,7 +288,6 @@ const GameBoard: React.FC = () => {
 								playerId={4}
 								playerName={gameStateServer.players[3].playerName}
 								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[3].playerId}
-								flipLayout={true}
 								isDisconnected={!gameStateServer.players[3].isConnected}
 							/>
 						)}

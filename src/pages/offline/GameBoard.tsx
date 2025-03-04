@@ -100,7 +100,6 @@ const GameBoard: React.FC = () => {
 							playerId={2}
 							playerName='Player 2'
 							isPlayerTurn={gameState.playerTurn === 2}
-							flipLayout={true}
 						/>
 					</div>
 					<div className='game-board__game-grid-wrapper'>
@@ -126,7 +125,6 @@ const GameBoard: React.FC = () => {
 								playerId={4}
 								playerName='Player 4'
 								isPlayerTurn={gameState.playerTurn === 4}
-								flipLayout={true}
 							/>
 						)}
 					</div>

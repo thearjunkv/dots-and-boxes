@@ -7,11 +7,10 @@ type PlayerCardProps = {
 	playerId: number;
 	playerName: string;
 	isPlayerTurn?: boolean;
-	flipLayout?: boolean;
 	isDisconnected?: boolean;
 };
 
-const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn, flipLayout, isDisconnected }) => {
+const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerTurn, isDisconnected }) => {
 	const playerIconPath = `/assets/player-${playerId}.svg`;
 
 	return (
@@ -19,7 +18,6 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ playerId, playerName, isPlayerT
 			className={cn(
 				'player-card',
 				isPlayerTurn && 'player-card--active',
-				flipLayout && 'player-card--flip-layout',
 				isDisconnected && 'player-card--disconnected'
 			)}
 			data-testid={getTestId(testIds.PLAYER_CARD)}

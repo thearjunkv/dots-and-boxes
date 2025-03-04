@@ -1,5 +1,6 @@
 .player-card {
 	padding: 0.4em;
+	min-width: 80px;
 
 	background-color: var(--neutral-900);
 	color: var(--neutral-600);
@@ -9,14 +10,11 @@
 	overflow: hidden;
 
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 
 	transition: color var(--transition-duration) var(--transition-timing-function);
-
-	&--flip-layout {
-		flex-direction: row-reverse;
-	}
 
 	&__player-icon-wrapper {
 		width: 35px;
@@ -65,11 +63,5 @@
 	}
 	&--disconnected &__icon-disconnected {
 		opacity: 1;
-	}
-}
-
-@media screen and (max-width: 425px) {
-	.player-card {
-		flex-direction: column;
 	}
 }
