@@ -129,7 +129,11 @@ const PreGame: React.FC = () => {
 			</div>
 			{gameStateServer.host !== playerId && <div className='pre-game__waiting-message'>Waiting for host...</div>}
 
-			{gameStateServer.host === playerId && (
+			{gameStateServer.host === playerId && isStartGameDisabled && (
+				<div className='pre-game__waiting-message'>Waiting for others to join...</div>
+			)}
+
+			{gameStateServer.host === playerId && !isStartGameDisabled && (
 				<div className='main-btn-wrapper'>
 					<button
 						className='btn pre-game__btn-start'
@@ -140,6 +144,7 @@ const PreGame: React.FC = () => {
 					</button>
 				</div>
 			)}
+
 			<PopupAlert
 				isOpen={popupAlert.show}
 				onClose={() => setPopupAlert(p => ({ ...p, show: false }))}

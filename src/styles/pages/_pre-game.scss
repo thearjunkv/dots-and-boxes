@@ -6,7 +6,6 @@
 
 	&__players-list {
 		width: 100%;
-		padding: 1em 0;
 	}
 
 	&__player {
@@ -60,15 +59,16 @@
 	}
 
 	&__waiting-message {
-		font-size: 1rem;
+		margin-top: 1em;
+		font-size: 0.875rem;
 		text-align: center;
+		color: var(--neutral-300);
 	}
 }
 
 @media screen and (max-width: 425px) {
 	.pre-game {
-		&__player,
-		&__waiting-message {
+		&__player {
 			font-size: 0.875rem;
 		}
 	}
