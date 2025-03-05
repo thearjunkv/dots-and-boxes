@@ -64,6 +64,26 @@
 		text-align: center;
 		color: var(--neutral-300);
 	}
+
+	&__room-id-wrapper {
+		position: fixed;
+		left: 50%;
+		bottom: 0;
+		transform: translate(-50%, -20px);
+		padding: 0.6em 1.2em;
+
+		background-color: var(--neutral-700);
+		border-radius: 4px;
+
+		color: var(--neutral-300);
+		font-size: 0.875rem;
+	}
+
+	&__room-id {
+		color: var(--white);
+		font-weight: 500;
+		letter-spacing: 1.2px;
+	}
 }
 
 @media screen and (max-width: 425px) {

@@ -100,7 +100,7 @@ const PreGame: React.FC = () => {
 					})
 				}
 			/>
-			<h1 className='title'>Room (ID: {gameStateServer.roomId})</h1>
+			<h1 className='title'>Room ({gameStateServer.gridSize})</h1>
 
 			<div className='pre-game__players-list'>
 				{gameStateServer.players.map(player => {
@@ -144,6 +144,10 @@ const PreGame: React.FC = () => {
 					</button>
 				</div>
 			)}
+
+			<div className='pre-game__room-id-wrapper'>
+				ID: <span className='pre-game__room-id'>{gameStateServer.roomId}</span>
+			</div>
 
 			<PopupAlert
 				isOpen={popupAlert.show}
