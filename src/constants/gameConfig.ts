@@ -9,7 +9,7 @@ const playerColorsMap: Map<number, string> = new Map([
 	[4, '#e1a63b']
 ]);
 
-const gridSizes: GridSize[] = ['5x5', '6x6', '7x7'];
+const gridSizes: GridSize[] = ['4x4', '5x5', '6x6'];
 
 export const gameConfig = {
 	playerCounts,

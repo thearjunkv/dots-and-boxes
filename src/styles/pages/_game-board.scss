@@ -19,31 +19,31 @@
 		margin: 0.8em 0;
 	}
 
+	&--4x4 {
+		--game-grid-box-size: 65px;
+	}
+
 	&--5x5 {
-		--game-grid-box-size: 50px;
+		--game-grid-box-size: 55px;
 	}
 
 	&--6x6 {
 		--game-grid-box-size: 45px;
 	}
-
-	&--7x7 {
-		--game-grid-box-size: 40px;
-	}
 }
 
 @media screen and (max-width: 375px) {
 	.game-board {
+		&--4x4 {
+			--game-grid-box-size: 58px;
+		}
+
 		&--5x5 {
-			--game-grid-box-size: 42px;
+			--game-grid-box-size: 45px;
 		}
 
 		&--6x6 {
 			--game-grid-box-size: 37px;
-		}
-
-		&--7x7 {
-			--game-grid-box-size: 32px;
 		}
 	}
 }
