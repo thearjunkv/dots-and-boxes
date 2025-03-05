@@ -56,8 +56,8 @@ const GameBoard: React.FC = () => {
 		body: ''
 	});
 
-	const gridSizeData = gameStateServer ? gameStateServer.gridSize : gameConfig.gridSizes[0];
-	const playerCountData = gameStateServer ? gameStateServer.players.length : gameConfig.playerCounts[0];
+	const gridSizeData = gameStateServer?.gridSize ?? gameConfig.gridSizes[0];
+	const playerCountData = gameStateServer?.players?.length ?? gameConfig.playerCounts[0];
 
 	const playerCount = isValidPlayerCount(playerCountData) ? playerCountData : gameConfig.playerCounts[0];
 	const gridSize = isValidGridSize(gridSizeData) ? gridSizeData : gameConfig.gridSizes[0];
@@ -195,7 +195,8 @@ const GameBoard: React.FC = () => {
 		});
 	}, []);
 	const handleRoomRejoinAck = useCallback(
-		(gameStateServer: GameStateServer) => navigate('/pre-game', { state: { gameStateServer }, replace: true }),
+		(gameStateServer: GameStateServer) =>
+			navigate('/online/pre-game', { state: { gameStateServer }, replace: true }),
 		[navigate]
 	);
 	const updateGameStateServer = useCallback(
@@ -253,15 +254,15 @@ const GameBoard: React.FC = () => {
 					<div className='game-board__player-cards-container--top'>
 						<PlayerCard
 							playerId={1}
-							playerName={gameStateServer.players[0].playerName}
-							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[0].playerId}
-							isDisconnected={!gameStateServer.players[0].isConnected}
+							playerName={gameStateServer.players[0]?.playerName}
+							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[0]?.playerId}
+							isDisconnected={!gameStateServer.players[0]?.isConnected}
 						/>
 						<PlayerCard
 							playerId={2}
-							playerName={gameStateServer.players[1].playerName}
-							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[1].playerId}
-							isDisconnected={!gameStateServer.players[1].isConnected}
+							playerName={gameStateServer.players[1]?.playerName}
+							isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[1]?.playerId}
+							isDisconnected={!gameStateServer.players[1]?.isConnected}
 						/>
 					</div>
 					<div className='game-board__game-grid-wrapper'>
@@ -275,20 +276,20 @@ const GameBoard: React.FC = () => {
 						/>
 					</div>
 					<div className='game-board__player-cards-container--bottom'>
-						{gameStateServer.players.length > 2 && (
+						{playerCount > 2 && (
 							<PlayerCard
 								playerId={3}
-								playerName={gameStateServer.players[2].playerName}
-								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[2].playerId}
-								isDisconnected={!gameStateServer.players[2].isConnected}
+								playerName={gameStateServer.players[2]?.playerName}
+								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[2]?.playerId}
+								isDisconnected={!gameStateServer.players[2]?.isConnected}
 							/>
 						)}
 						{playerCount > 3 && (
 							<PlayerCard
 								playerId={4}
-								playerName={gameStateServer.players[3].playerName}
-								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[3].playerId}
-								isDisconnected={!gameStateServer.players[3].isConnected}
+								playerName={gameStateServer.players[3]?.playerName}
+								isPlayerTurn={gameStateServer.nextMove === gameStateServer.players[3]?.playerId}
+								isDisconnected={!gameStateServer.players[3]?.isConnected}
 							/>
 						)}
 					</div>

@@ -13,20 +13,19 @@ import PrevPageBtn from '../../components/PrevPageBtn';
 const GameBoard: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const redirectOffline = () => navigate('/offline', { replace: true });
 
 	const [gameState, setGameState] = useState<GameState<number>>({
 		selectedLinesToPlayerMap: new Map(),
 		capturedBoxesMap: new Map(),
 		playerTurn: 1
 	});
-
 	const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
-
 	const [showScoreboard, setShowScoreboard] = useState<boolean>(false);
 
-	const data = location.state || {};
-	const playerCountData = data.playerCount;
-	const gridSizeData = data.gridSize;
+	const data = location.state ?? {};
+	const playerCountData = data.playerCount ?? gameConfig.playerCounts[0];
+	const gridSizeData = data.gridSize ?? gameConfig.gridSizes[0];
 
 	const playerCount = isValidPlayerCount(playerCountData) ? playerCountData : gameConfig.playerCounts[0];
 	const gridSize = isValidGridSize(gridSizeData) ? gridSizeData : gameConfig.gridSizes[0];
@@ -57,11 +56,11 @@ const GameBoard: React.FC = () => {
 			gameState.selectedLinesToPlayerMap.size === 0 ||
 			gameState.capturedBoxesMap.size === gridRowCount * gridColCount
 		) {
-			navigate('/offline', { replace: true });
+			redirectOffline();
 			return;
 		}
 		const userConfirm = window.confirm('The game will be lost. Are you sure you want to go back?');
-		if (userConfirm) navigate('/offline', { replace: true });
+		if (userConfirm) redirectOffline();
 	};
 
 	useEffect(() => {
@@ -135,7 +134,7 @@ const GameBoard: React.FC = () => {
 				isOpen={showScoreboard}
 				playerScores={playerScores}
 				onPlayAgain={onPlayAgain}
-				onLeave={() => navigate('/offline', { replace: true })}
+				onLeave={redirectOffline}
 			/>
 		</>
 	);
