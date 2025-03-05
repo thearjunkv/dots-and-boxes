@@ -30,7 +30,7 @@ const GameBoard: React.FC = () => {
 
 	const playerCount = isValidPlayerCount(playerCountData) ? playerCountData : gameConfig.playerCounts[0];
 	const gridSize = isValidGridSize(gridSizeData) ? gridSizeData : gameConfig.gridSizes[0];
-	const [gridRowCount, gridColCount] = gameConfig.gridSizeMap[gridSize];
+	const [gridRowCount, gridColCount] = gridSize.split('x').map(n => Number(n));
 
 	const handleLineClick = (lineId: string) => {
 		const { selectedLinesToPlayerMap, capturedBoxesMap, playerTurn } = gameState;

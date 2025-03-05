@@ -11,15 +11,8 @@ const playerColorsMap: Map<number, string> = new Map([
 
 const gridSizes: GridSize[] = ['5x5', '6x6', '7x7'];
 
-const gridSizeMap: { [key in GridSize]: [number, number] } = {
-	'5x5': [5, 5],
-	'6x6': [6, 6],
-	'7x7': [7, 7]
-};
-
 export const gameConfig = {
 	playerCounts,
 	playerColorsMap,
-	gridSizes,
-	gridSizeMap
+	gridSizes
 };
