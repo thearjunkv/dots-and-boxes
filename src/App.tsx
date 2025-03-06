@@ -13,8 +13,11 @@ import GameBoardOnline from './pages/online/GameBoard';
 import SocketStatus from './components/SocketStatus';
 
 import './styles/main.scss';
+import { usePingServer } from './hooks/usePingServer';
 
 function App() {
+	usePingServer();
+
 	return (
 		<Routes>
 			<Route
