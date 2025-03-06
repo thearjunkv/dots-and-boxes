@@ -12,7 +12,7 @@ export const usePingServer = () => {
 			}
 
 			try {
-				const res = await fetch(url);
+				const res = await fetch(`${url}/keep-alive`);
 				if (!res.ok) throw 'Server error';
 				console.log('Ping successful');
 			} catch (e) {
