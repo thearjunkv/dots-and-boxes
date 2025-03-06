@@ -16,7 +16,7 @@ export const usePingServer = () => {
 				if (!res.ok) throw 'Server error';
 				console.log('Ping successful');
 			} catch (e) {
-				console.log('Ping failed');
+				console.error('Ping failed: ', e);
 			}
 		};
 
